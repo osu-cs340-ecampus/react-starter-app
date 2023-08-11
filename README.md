@@ -1,5 +1,3 @@
-- Now that the feature is done, go back to the "INDIVIDUAL GIT WORK CYCLE" section to start your new feature on your own dev-branch.
-
 # Overview
 
 This guide is intended for the students in CS 340 who want to take a path through the class using React and Node.
