@@ -1,28 +1,29 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const UpdateCustomer = () => {
+const UpdatePerson = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
+    fname: "",
+    lname: "",
+    homeworld: "",
+    age: "",
   });
 
   useEffect(() => {
-    const fetchCustomerData = async () => {
+    const fetchPeopleData = async () => {
       try {
-        const URL = process.env.REACT_APP_API_URL + "customers/" + id;
+        const URL = process.env.REACT_APP_API_URL + "people/" + id;
         const response = await axios.get(URL);
         setFormData(response.data);
       } catch (err) {
-        console.log("Error fetching customer data:", err);
+        console.log("Error fetching people data:", err);
       }
     };
 
-    fetchCustomerData();
+    fetchPeopleData();
   }, [id]);
 
   const handleInputChange = (event) => {
@@ -36,57 +37,70 @@ const UpdateCustomer = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const URL = process.env.REACT_APP_API_URL + "customers/" + id;
+      const URL = process.env.REACT_APP_API_URL + "people/" + id;
       const response = await axios.put(URL, formData);
       if (response.status !== 200) {
-        alert("Error updating customer");
+        alert("Error updating person");
       } else {
         alert(response.data.message);
-        navigate("/customers");
+        navigate("/people");
       }
     } catch (err) {
-      console.log("Error updating customer:", err);
+      console.log("Error updating person:", err);
     }
   };
 
   return (
     <div>
-      <h2>Update Customer</h2>
+      <h2>Update Person</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Name:</label>
+          <label>First Name:</label>
           <input
             type="text"
-            name="name"
+            name="fname"
             onChange={handleInputChange}
             required
-            defaultValue={formData.name}
+            defaultValue={formData.fname}
           />
         </div>
         <div>
-          <label>Email:</label>
+          <label>Last Name:</label>
           <input
-            type="email"
-            name="email"
+            type="text"
+            name="lname"
             onChange={handleInputChange}
             required
-            defaultValue={formData.email}
+            defaultValue={formData.lname}
           />
         </div>
         <div>
-          <label>Phone:</label>
+          <label>Homeworld:</label>
           <input
-            type="tel"
-            name="phone"
+            type="text"
+            name="homeworld"
             onChange={handleInputChange}
             required
-            defaultValue={formData.phone}
+            defaultValue={formData.homeworld}
           />
         </div>
+        <div>
+          <label>Age:</label>
+          <input
+            type="number"
+            name="age"
+            onChange={handleInputChange}
+            required
+            defaultValue={formData.age}
+          />
+        </div>
+        <button type="button" onClick={() => navigate("/people")}>
+          Cancel
+        </button>
         <button type="submit">Update</button>
       </form>
     </div>
   );
 };
 
-export default UpdateCustomer;
+export default UpdatePerson;

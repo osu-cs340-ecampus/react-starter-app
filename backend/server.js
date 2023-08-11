@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3002;
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/customers", require("./routes/customerRoutes"));
+app.use("/api/people", require("./routes/peopleRoutes"));
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}...`);
