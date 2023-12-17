@@ -13,7 +13,7 @@ There are a few assumptions that are made when this guide is written:
 
 ## Contributions
 
-Dr. Curry and Prof. Safonte for allowing me the time to build the guide and project for other students to benefit from.
+...
 
 ## TL;DR
 
