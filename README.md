@@ -13,27 +13,13 @@ There are a few assumptions that are made when this guide is written:
 
 ## Contributions
 
-...
+Under supervision of Dr. Michael Curry: Devin Daniels, Zachary Maes
 
 ## TL;DR
 
 --git clone
 
-...
-
-# Table of Contents
-
-- [Overview](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#overview)
-  - [Contributions](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#contributions)
-  - [Clone and Go](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#clone-and-go)
-- [Table of Contents](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#table-of-contents)
-- [Setting development environment]()
-  - [Text Editior](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#text-editior)
-  - [Browser](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#browser)
-  - [Terminal Application](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#terminal-application)
-  - [Git](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#git)
-    - [Create a .gitignore File](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#create-a-.gitignore-file)
-  - [More on Git](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#more-on-git)
+..
 
 # Get The Tools Downloaded You Will Need
 
@@ -70,4 +56,37 @@ I strongly believe in using Version Control. Why?
 - It can support your case if you are ever scrutinized for academic dishonesty. (Having a paper trail of commits you can show the school)
 - If your computer fails, your data is not lost.
 - It integrates quite easily with other third party services such as Heroku.
--
+
+# Table of Contents
+
+- [Overview](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#overview)
+  - [Contributions](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#contributions)
+  - [Clone and Go](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#clone-and-go)
+- [Table of Contents](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#table-of-contents)
+- [Setting development environment]()
+  - [Text Editior](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#text-editior)
+  - [Browser](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#browser)
+  - [Terminal Application](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#terminal-application)
+  - [Git](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#git)
+    - [Create a .gitignore File](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#create-a-.gitignore-file)
+  - [More on Git](https://github.com/osu-cs340-ecampus/nodejs-starter-app/blob/main/README.md#more-on-git)
+
+## Introduction
+
+## Getting Started
+
+## Backend Setup (Node.js/Express)
+
+## Frontend Setup (React)
+
+## Running the Application
+
+## Testing
+
+## Deployment
+
+## Troubleshooting
+
+## Additional Resources
+
+## Conclusion
