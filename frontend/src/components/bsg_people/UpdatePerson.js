@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const UpdatePerson = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const person = location.state.person;
+  console.log(person);
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
@@ -13,7 +17,7 @@ const UpdatePerson = () => {
   });
 
   useEffect(() => {
-    const fetchPeopleData = async () => {
+    const fetchPersonByID = async () => {
       try {
         const URL = process.env.REACT_APP_API_URL + "people/" + id;
         const response = await axios.get(URL);
@@ -23,7 +27,7 @@ const UpdatePerson = () => {
       }
     };
 
-    fetchPeopleData();
+    fetchPersonByID();
   }, [id]);
 
   const handleInputChange = (event) => {
@@ -35,6 +39,7 @@ const UpdatePerson = () => {
   };
 
   const handleSubmit = async (event) => {
+    // Stop default form behavior which is to reload the page
     event.preventDefault();
     try {
       const URL = process.env.REACT_APP_API_URL + "people/" + id;
@@ -77,10 +82,9 @@ const UpdatePerson = () => {
         <div>
           <label>Homeworld:</label>
           <input
-            type="text"
+            type="number"
             name="homeworld"
             onChange={handleInputChange}
-            required
             defaultValue={formData.homeworld}
           />
         </div>

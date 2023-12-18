@@ -1,6 +1,6 @@
 # Overview
 
-This guide is intended for the students in CS 340 who want to take a path through the class using React and Node.
+===---This guide is intended for the students in CS 340 who want to take a path through the class using React and Node.
 
 This guide walks through everything from getting the tools setup to work on the app, setting up the infrastructure required to build and run your app, and building and (eventually) deploying the app either to OSU's flip server or Heroku.
 

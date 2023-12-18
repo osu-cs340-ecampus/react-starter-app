@@ -9,10 +9,7 @@ const getPeople = async (req, res) => {
     const query = "SELECT * FROM bsg_people";
     // Execute the query using the "db" object from the configuration file
     const [rows] = await db.query(query);
-    // If no customers were found, throw an error
-    if (rows.length === 0) {
-      throw new Error("No people found");
-    }
+
     // Send the result as a JSON response
     res.json(rows);
   } catch (error) {
@@ -44,7 +41,12 @@ const createPerson = async (req, res) => {
     const { fname, lname, homeworld, age } = req.body;
     const query =
       "INSERT INTO bsg_people (fname, lname, homeworld, age) VALUES (?, ?, ?, ?)";
-    const response = await db.query(query, [fname, lname, homeworld, age]);
+    const response = await db.query(query, [
+      fname,
+      lname,
+      homeworld === "" ? null : parseInt(homeworld),
+      age,
+    ]);
     res.status(201).json(response);
   } catch (error) {
     console.error("Error creating person:", error);
@@ -64,6 +66,9 @@ const updatePerson = async (req, res) => {
     ]);
 
     const oldPerson = data[0];
+
+    console.log("Old person", oldPerson);
+    console.log("New person", newPerson);
 
     // If people objects are not deep equal, update the person
     if (!lodash.isEqual(newPerson, oldPerson)) {
@@ -92,14 +97,39 @@ const updatePerson = async (req, res) => {
 // Endpoint to delete a customer from the database
 const deletePerson = async (req, res) => {
   console.log("Deleting person with id:", req.params.id);
+  const personID = req.params.id;
+
   try {
-    const personID = req.params.id;
-    const query = "DELETE FROM bsg_people WHERE id = ?";
-    const result = await db.query(query, [personID]);
-    res.json(result);
+    // Check if the person exists
+    const [personExists] = await db.query(
+      "SELECT 1 FROM bsg_people WHERE id = ?",
+      [personID]
+    );
+    // If the person doesn't exist, return an error
+    if (personExists.length === 0) {
+      return res.status(404).send("Person not found");
+    }
+
+    // Delete related records from the intersection table (see FK contraints in the database schema)
+    const [response] = await db.query(
+      "DELETE FROM bsg_cert_people WHERE pid = ?",
+      [personID]
+    );
+
+    console.log(
+      "Deleted",
+      response.affectedRows,
+      "rows from bsg_cert_people intersection table"
+    );
+
+    // Delete the person from the main table
+    await db.query("DELETE FROM bsg_people WHERE id = ?", [personID]);
+
+    // Return the appropriate status code
+    res.status(204).send();
   } catch (error) {
     console.error("Error deleting person from the database:", error);
-    res.status(500).json({ error: "Error deleting person" });
+    res.status(500).json({ error: error.message });
   }
 };
 

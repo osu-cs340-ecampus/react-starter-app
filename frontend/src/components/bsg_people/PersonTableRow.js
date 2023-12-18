@@ -1,28 +1,29 @@
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { BsTrash } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const TableRow = ({ person, fetchPeople }) => {
   // Hook that allows us to navigate programmatically
   const navigate = useNavigate();
+
   // Redirect to edit person page
   const handleEdit = () => {
     // We can access the id (and query the person) with useParams() in the UpdatePerson component
-    navigate("/people/edit/" + person.id);
+    navigate("/people/edit/" + person.id, { state: { person } });
   };
-  const handleDelete = async () => {
+
+  const deleteRow = async () => {
     try {
       const URL = process.env.REACT_APP_API_URL + "people/" + person.id;
       const response = await axios.delete(URL);
       // Ensure that the person was deleted successfully
-      if (response.status !== 200) {
-        alert("Error deleting person");
-      } else {
+      if (response.status === 204) {
         alert("Person deleted successfully");
       }
     } catch (err) {
-      console.log("Err deleting person:", err);
+      alert(err.response.data.error || "Error deleting person");
+      console.log(err);
     }
     fetchPeople();
   };
@@ -42,11 +43,7 @@ const TableRow = ({ person, fetchPeople }) => {
         />
       </td>
       <td>
-        <BsTrash
-          onClick={handleDelete}
-          size={25}
-          style={{ cursor: "pointer" }}
-        />
+        <BsTrash onClick={deleteRow} size={25} style={{ cursor: "pointer" }} />
       </td>
     </tr>
   );
