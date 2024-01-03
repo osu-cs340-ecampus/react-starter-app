@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function CreatePerson() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
@@ -10,12 +12,10 @@ function CreatePerson() {
     age: "",
   });
 
-  const navigate = useNavigate();
-
+  
   const handleSubmit = async (e) => {
     // Prevent page reload
     e.preventDefault();
-
     // Create a new person object from the formData
     const newPerson = {
       fname: formData.fname,

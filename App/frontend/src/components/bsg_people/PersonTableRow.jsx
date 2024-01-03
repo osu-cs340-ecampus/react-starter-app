@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 const TableRow = ({ person, fetchPeople }) => {
   // Hook that allows us to navigate programmatically
   const navigate = useNavigate();
-
   // Redirect to edit person page
   const handleEdit = () => {
     // We can access the id (and query the person) with useParams() in the UpdatePerson component

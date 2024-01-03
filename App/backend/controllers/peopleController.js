@@ -1,14 +1,17 @@
+// Load db config
 const db = require("../database/config");
-require("dotenv").config(); // ENV vars
-const lodash = require("lodash"); // Util to deep-compare two objects
+// Load .env variables
+require("dotenv").config();
+// Util to deep-compare two objects
+const lodash = require("lodash");
 
 // Returns all rows of people in bsg_people
 const getPeople = async (req, res) => {
   try {
-    // SQL query to select all rows from the "customers" table
+    // Select all rows from the "bsg_people" table
     const query = "SELECT * FROM bsg_people";
     // Execute the query using the "db" object from the configuration file
-    const [rows] = await db.pool.query(query);
+    const [rows] = await db.query(query);
     // Send back the rows to the client
     res.status(200).json(rows);
   } catch (error) {

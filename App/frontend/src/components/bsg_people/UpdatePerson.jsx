@@ -7,28 +7,14 @@ const UpdatePerson = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const person = location.state.person;
-  console.log(person);
+  const prevPerson = location.state.person;
+
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
     homeworld: "",
     age: "",
   });
-
-  useEffect(() => {
-    const fetchPersonByID = async () => {
-      try {
-        const URL = import.meta.env.VITE_API_URL + "people/" + id;
-        const response = await axios.get(URL);
-        setFormData(response.data);
-      } catch (err) {
-        console.log("Error fetching people data:", err);
-      }
-    };
-
-    fetchPersonByID();
-  }, [id]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -66,7 +52,7 @@ const UpdatePerson = () => {
             name="fname"
             onChange={handleInputChange}
             required
-            defaultValue={formData.fname}
+            defaultValue={prevPerson.fname}
           />
         </div>
         <div>
@@ -76,7 +62,7 @@ const UpdatePerson = () => {
             name="lname"
             onChange={handleInputChange}
             required
-            defaultValue={formData.lname}
+            defaultValue={prevPerson.lname}
           />
         </div>
         <div>
@@ -85,7 +71,7 @@ const UpdatePerson = () => {
             type="number"
             name="homeworld"
             onChange={handleInputChange}
-            defaultValue={formData.homeworld}
+            defaultValue={prevPerson.homeworld}
           />
         </div>
         <div>
@@ -95,7 +81,7 @@ const UpdatePerson = () => {
             name="age"
             onChange={handleInputChange}
             required
-            defaultValue={formData.age}
+            defaultValue={prevPerson.age}
           />
         </div>
         <button type="button" onClick={() => navigate("/people")}>
