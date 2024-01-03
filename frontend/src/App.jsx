@@ -10,9 +10,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        {/* /people/* is  */}
         <Route path="/people/*" element={<PeoplePage />} />
-        {/*  */}
       </Routes>
     </>
   );
