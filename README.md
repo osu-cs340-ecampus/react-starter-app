@@ -12,8 +12,6 @@
 
 # Overview
 
-Changed in flip
-
 This guide is tailored for students enrolled in CS 340 who aim to develop their final project using React.js, Node/Express, and MySQL.
 
 The starter code provided in this guide encompasses essential components such as tool setup, infrastructure for building and running your application, and guidelines for deploying your application to OSU's Flip server.
@@ -43,12 +41,90 @@ Terminal: The built-in terminal in VSCode works great.
 
 1. Create a `.env` file in the root directory (`.env` should have the same indentation as `server.js`, both need to be at the root of the directory).
 2. Git cloning does not include the `.env` file for obvious reasons. Here is the naming schema I would suggest (fill in with info from activity 2 - Connecting to 340 DB)):
-   - DB_HOST=""
-   - DB_USER=""
-   - DB_DATABASE=""
-   - DB_PASSWORD=""
-   - PORT=8500
+   ```python
+   DB_HOST="classmysql.engr.oregonstate.edu"  # keep this
+   DB_USER="cs340_youronid"                   # replace with your onid
+   DB_DATABASE="cs340_youronid"               # replace with your onid
+   DB_PASSWORD="****"                         # your db password - last 4 digits of osu id number
+   PORT=8500                                  # Set a port number between:[1024 < PORT < 65535]
 3. `server.js` is the entry point for the backend. No changes are needed here except perhaps updating the `console.log()` statement in the `app.listen()` to reflect the FLIP server you've connected to via SSH.
+
+4. Inside your flip server you will need to set up the `ddl.sql` file located inside `/backend/databases/` using the source command.
+```sh
+# Inside the flip terminal:
+
+# change directory to where the ddl.sql file is located
+cd ~/react-starter-app/App/backend/databases  # or wherever the ddl.sql is located
+
+# login to your mariadb (shortcut with shell scripting)
+connectdb  # only works if you have set up the bash shortcut from canvas/ed post
+
+# normal login command (if not using shortcut)
+mysql -u cs340_youronid -h classmysql.engr.oregonstate.edu -p cs340_youronid
+
+# type in your 4 digit mariadb password and press 'enter' key
+# flip will login to mariadb...
+```
+```
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 1359790
+Server version: 10.6.16-MariaDB-log MariaDB Server
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+```
+```sh
+# Use 'show tables;' command to ensure that your database is empty, backup tables if necessary prior to moving on, drop all of your tables.
+```
+```sql
+MariaDB [cs340_maesz]> SHOW tables;
+Empty set (0.001 sec)
+
+MariaDB [cs340_maesz]> source ddl.sql;
+Query OK, 0 rows affected (0.001 sec)
+
+Query OK, 0 rows affected, 1 warning (0.004 sec)
+
+Query OK, 0 rows affected (0.007 sec)
+
+Query OK, 11 rows affected (0.001 sec)
+Records: 11  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.003 sec)
+
+Query OK, 0 rows affected (0.005 sec)
+
+Query OK, 4 rows affected (0.000 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected, 1 warning (0.003 sec)
+
+Query OK, 0 rows affected (0.006 sec)
+
+Query OK, 9 rows affected (0.001 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.007 sec)
+
+Query OK, 8 rows affected (0.001 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [cs340_maesz]> show tables;
++-----------------------+
+| Tables_in_cs340_maesz |
++-----------------------+
+| bsg_cert              |
+| bsg_cert_people       |
+| bsg_people            |
+| bsg_planets           |
++-----------------------+
+4 rows in set (0.001 sec)
+
+MariaDB [cs340_maesz]> 
+```
 
 ## Frontend Setup (Vite)
 
