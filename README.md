@@ -82,4 +82,4 @@ Please note that testing is outside the scope of this project and course and wil
 
 ## Contributions
 
-This guide was developed under the supervision of Dr. Michael Curry, with contributions from Devin Daniels and Zachary Maes.
+This guide was developed under the supervision of Dr. Michael Curry and Dr. Danielle Safonte, with contributions from Devin Daniels and Zachary Maes.
