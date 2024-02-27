@@ -1,13 +1,15 @@
 # TL;DR
 
 1. Clone the starter app repository: `git clone git@github.com:osu-cs340-ecampus/react-starter-app.git`
-2. Navigate to the app directory: `cd react-starter-app`
+2. Navigate to the `/App` directory: `cd react-starter-app/App`
 3. Set up the frontend:
-   1. Install necessary packages: `npm install`
-   2. Launch the frontend: `npm start`
+   1. Change directory to frontend: `cd frontend`
+   2. Install necessary packages: `npm install`
+   3. Launch the frontend: `npm start`
 4. Set up the backend:
-   1. Install necessary packages: `npm install`
-   2. Launch the backend: `npm start`
+   1. Change directory to backend: `cd ../backend` 
+   2. Install necessary packages: `npm install`
+   3. Launch the backend: `npm start`
 5. Begin your development journey: Happy Hacking!
 
 # Overview
@@ -50,81 +52,123 @@ Terminal: The built-in terminal in VSCode works great.
 3. `server.js` is the entry point for the backend. No changes are needed here except perhaps updating the `console.log()` statement in the `app.listen()` to reflect the FLIP server you've connected to via SSH.
 
 4. Inside your flip server you will need to set up the `ddl.sql` file located inside `/backend/databases/` using the source command.
-```sh
-# Inside the flip terminal:
+   ```sh
+   # change directory to where the ddl.sql file is located
+   cd react-starter-app/App/backend/databases  # or wherever the ddl.sql is located
 
-# change directory to where the ddl.sql file is located
-cd ~/react-starter-app/App/backend/databases  # or wherever the ddl.sql is located
+   # normal login command (if not using shortcut)
+   mysql -u cs340_youronid -h classmysql.engr.oregonstate.edu -p cs340_youronid
 
-# login to your mariadb (shortcut with shell scripting)
-connectdb  # only works if you have set up the bash shortcut from canvas/ed post
+   # type in your 4 digit mariadb password and press 'enter' key
+   ```
 
-# normal login command (if not using shortcut)
-mysql -u cs340_youronid -h classmysql.engr.oregonstate.edu -p cs340_youronid
+   flip will login to mariadb...
+   ```
+   Welcome to the MariaDB monitor.  Commands end with ; or \g.
+   Your MariaDB connection id is 1359790
+   Server version: 10.6.16-MariaDB-log MariaDB Server
 
-# type in your 4 digit mariadb password and press 'enter' key
-# flip will login to mariadb...
-```
-```
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 1359790
-Server version: 10.6.16-MariaDB-log MariaDB Server
+   Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
-Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+   Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+   ```
+   Use 'show tables;' command to ensure that your database is empty, backup tables if necessary prior to moving on, drop all of your tables.
+   ```sql
+   MariaDB [cs340_maesz]> SHOW tables;
+   Empty set (0.001 sec)
+   ```
+   Now you can source the ddl.sql
+   ```sql
+   MariaDB [cs340_maesz]> source ddl.sql;
+   Query OK, 0 rows affected (0.001 sec)
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-```
-```sh
-# Use 'show tables;' command to ensure that your database is empty, backup tables if necessary prior to moving on, drop all of your tables.
-```
-```sql
-MariaDB [cs340_maesz]> SHOW tables;
-Empty set (0.001 sec)
+   Query OK, 0 rows affected, 1 warning (0.004 sec)
 
-MariaDB [cs340_maesz]> source ddl.sql;
-Query OK, 0 rows affected (0.001 sec)
+   Query OK, 0 rows affected (0.007 sec)
 
-Query OK, 0 rows affected, 1 warning (0.004 sec)
+   Query OK, 11 rows affected (0.001 sec)
+   Records: 11  Duplicates: 0  Warnings: 0
 
-Query OK, 0 rows affected (0.007 sec)
+   Query OK, 0 rows affected, 1 warning (0.003 sec)
 
-Query OK, 11 rows affected (0.001 sec)
-Records: 11  Duplicates: 0  Warnings: 0
+   Query OK, 0 rows affected (0.005 sec)
 
-Query OK, 0 rows affected, 1 warning (0.003 sec)
+   Query OK, 4 rows affected (0.000 sec)
+   Records: 4  Duplicates: 0  Warnings: 0
 
-Query OK, 0 rows affected (0.005 sec)
+   Query OK, 0 rows affected, 1 warning (0.003 sec)
 
-Query OK, 4 rows affected (0.000 sec)
-Records: 4  Duplicates: 0  Warnings: 0
+   Query OK, 0 rows affected (0.006 sec)
 
-Query OK, 0 rows affected, 1 warning (0.003 sec)
+   Query OK, 9 rows affected (0.001 sec)
+   Records: 9  Duplicates: 0  Warnings: 0
 
-Query OK, 0 rows affected (0.006 sec)
+   Query OK, 0 rows affected (0.007 sec)
 
-Query OK, 9 rows affected (0.001 sec)
-Records: 9  Duplicates: 0  Warnings: 0
+   Query OK, 8 rows affected (0.001 sec)
+   Records: 8  Duplicates: 0  Warnings: 0
 
-Query OK, 0 rows affected (0.007 sec)
+   Query OK, 0 rows affected (0.000 sec)
+   ```
+   Confirm everything sourced with a `show tables;` command
+   ```sql
+   MariaDB [cs340_maesz]> show tables;
+   +-----------------------+
+   | Tables_in_cs340_maesz |
+   +-----------------------+
+   | bsg_cert              |
+   | bsg_cert_people       |
+   | bsg_people            |
+   | bsg_planets           |
+   +-----------------------+
+   4 rows in set (0.001 sec)
+   ```
+   Exit mariadb
+   ```sh
+   MariaDB [cs340_maesz]> exit
+   Bye
+   flip3 ~/react-starter-app/App/backend/database 1010$  # We are now back in the terminal
+   ```
 
-Query OK, 8 rows affected (0.001 sec)
-Records: 8  Duplicates: 0  Warnings: 0
+5. Now you must install all the node dependencies outlined in the `package.json` and `package-lock.json`. Run the following commands to do this:
+   
+   Change directory to /backend, wherever that exists in your file structure.
+   ```sh
+   cd ~/react-starter-app/App/backend
+   ```
+   Use npm to install everything (Some of you may have to debug this step if anything goes wrong...):
+   ```sh
+   flip3 ~/react-starter-app/App/backend 1023$ npm install
+   npm WARN EBADENGINE Unsupported engine {
+   npm WARN EBADENGINE   package: 'lru-cache@8.0.5',
+   npm WARN EBADENGINE   required: { node: '>=16.14' },
+   npm WARN EBADENGINE   current: { node: 'v16.13.0', npm: '8.1.0' }
+   npm WARN EBADENGINE }
 
-Query OK, 0 rows affected (0.000 sec)
+   added 122 packages, and audited 123 packages in 28s
 
-MariaDB [cs340_maesz]> show tables;
-+-----------------------+
-| Tables_in_cs340_maesz |
-+-----------------------+
-| bsg_cert              |
-| bsg_cert_people       |
-| bsg_people            |
-| bsg_planets           |
-+-----------------------+
-4 rows in set (0.001 sec)
+   15 packages are looking for funding
+   run `npm fund` for details
 
-MariaDB [cs340_maesz]> 
-```
+   found 0 vulnerabilities
+   flip3 ~/react-starter-app/App/backend 1024$ 
+   ```
+
+6. Now you can start your application with the start script located in the package.json
+   ```bash
+   flip3 ~/react-starter-app/App/backend 1024$ npm start
+
+   > backend@1.0.0 start
+   > nodemon server.js
+
+   [nodemon] 3.0.2
+   [nodemon] to restart at any time, enter `rs`
+   [nodemon] watching path(s): *.*
+   [nodemon] watching extensions: js,mjs,cjs,json
+   [nodemon] starting `node server.js`
+   Server running:  http://flip3.engr.oregonstate.edu:8500...
+   ▌
+   ```
 
 ## Frontend Setup (Vite)
 
