@@ -20,9 +20,11 @@ The starter code provided in this guide encompasses essential components such as
 
 Key Assumptions:
 
-1. You have a foundational understanding of JavaScript and MySQL syntax.
-2. You are adept at using terminal commands like `cd`, `ls`, `mkdir`, etc.
-3. Access to OSU's flip servers and a MySQL database is available to you.
+1. You have read through and understand the [nodejs-starter-app](https://github.com/osu-cs340-ecampus/nodejs-starter-app)
+   - That guide uses nodejs, express, and handlebars, but goes deeper into the inner workings of express and nodejs.
+2. You have a foundational understanding of JavaScript and MySQL syntax.
+3. You are adept at using terminal commands like `cd`, `ls`, `mkdir`, etc.
+4. Access to OSU's flip servers and a MySQL database is available to you.
    - Note: Adaptations for local development are possible and outlined in this guide.
 
 ## Introduction
@@ -132,11 +134,11 @@ Terminal: The built-in terminal in VSCode works great.
 
 5. Now you must install all the node dependencies outlined in the `package.json` and `package-lock.json`. Run the following commands to do this:
    
-   Change directory to /backend, wherever that exists in your file structure.
+   Change directory to `/backend`, wherever that exists in your file structure.
    ```sh
    cd ~/react-starter-app/App/backend
    ```
-   Use npm to install everything (Some of you may have to debug this step if anything goes wrong...):
+   Use `npm install` to download everything (Some of you may have to debug this step if anything goes wrong...):
    ```sh
    flip3 ~/react-starter-app/App/backend 1023$ npm install
    npm WARN EBADENGINE Unsupported engine {
@@ -154,7 +156,7 @@ Terminal: The built-in terminal in VSCode works great.
    flip3 ~/react-starter-app/App/backend 1024$ 
    ```
 
-6. Now you can start your application with the start script located in the package.json
+6. Now you can start your application with the start script located in the `package.json`
    ```bash
    flip3 ~/react-starter-app/App/backend 1024$ npm start
 
@@ -169,6 +171,8 @@ Terminal: The built-in terminal in VSCode works great.
    Server running:  http://flip3.engr.oregonstate.edu:8500...
    ▌
    ```
+
+   This repo uses the package `nodemon` to run your program continuously. You may also install the package `forever` to accomplish this, see the [nodejs-starter-app](https://github.com/osu-cs340-ecampus/nodejs-starter-app) for instructions regarding the `forever` package.
 
 ## Frontend Setup (Vite)
 
