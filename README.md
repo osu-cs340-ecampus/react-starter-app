@@ -174,9 +174,108 @@ Terminal: The built-in terminal in VSCode works great.
 
    This repo uses the package `nodemon` to run your program continuously. You may also install the package `forever` to accomplish this, see the [nodejs-starter-app](https://github.com/osu-cs340-ecampus/nodejs-starter-app) for instructions regarding the `forever` package.
 
+   Remember, you must change the port numbers!
+
 ## Frontend Setup (Vite)
 
-[Outline the process for setting up the React frontend, including environment configuration and dependency management.]
+This section will guide you through setting up the frontend part of your application using Vite and React. Create React App has traditionally been the go to way to develop a react project, but It has been deprecated (no longer is being update or has support). Vite is the more modern bundling solution, which is what we use in this project. It is highly recomended that you read the [documentation for Vite](https://vitejs.dev/guide/) to understand how it works. It is very similar to CRA so many tutorials for CRA are still appicable to Vite projects for when you are searching the web for help.
+
+Vite allows you to wrtie react code, start a development server with `npm start`, and build a static `/dist` folder to serve your finished application (more on this in a later section). The scripts for these can be found or modified inside the `package.json`. Now we will walk through how to get your development server set up and running.
+
+
+1. Navigate to the `/frontend` directory.
+   ```sh
+   flip3 ~/react-starter-app/App 1006$ cd frontend
+   ```
+
+2. Modify the fronted `.env` file so that `VITE_API_URL` matches the backend api url you created in the prior steps. Also modify the frontend `VITE_PORT` for your dev server to run on.
+   ```python
+   VITE_API_URL='http://flip3.engr.oregonstate.edu:8500/api/'  # Change this url to match your backend express api url and port.
+   VITE_PORT=8501  # Set a port number between:[1024 < PORT < 65535], this should not be the same as the API port.
+   ```
+
+   The `VITE_API_URL` environment variable is used to fetch data from the backend api to this frontend application with axios in components like `PersonTable.jsx`. Here is a function from that file to demonstrate this:
+   ```jsx
+   // FILE: PersonTable.jsx
+   const fetchPeople = async () => {
+      try {
+         const URL = import.meta.env.VITE_API_URL + "people";
+         const response = await axios.get(URL);
+         setPeople(response.data);
+      } catch (error) {
+         alert("Error fetching people from the server.");
+         console.error("Error fetching people:", error);
+      }
+   };
+   ```
+
+   The `VITE_PORT` environment variable is used to modify the frontend port that this vite application runs on. This is set up inside the file `vite.config.js`. Usually the default port for vite react projects is `5173`, but we are using dotenv to modify this to a port of your choosing. You can see how this works below:
+
+   ```js
+   // FILE: vite.config.js
+   import { defineConfig } from 'vite'
+   import react from '@vitejs/plugin-react'
+   import dotenv from 'dotenv'
+
+   dotenv.config()
+
+   // https://vitejs.dev/config/
+   export default defineConfig({
+   plugins: [react()],
+   esbuild: {
+      loader: "jsx"
+   },
+   server: {
+      // Use VITE_PORT from your .env, or default to a port if not specified
+      port: parseInt(process.env.VITE_PORT, 10) || 5173
+   }
+   })
+   ```
+
+3. Install all the frontend dependencies. This will add the `node_modules` folder so that your project can run properly.
+   ```sh
+   flip3 ~/react-starter-app/App/frontend 1008$ npm install
+   npm WARN EBADENGINE Unsupported engine {
+   npm WARN EBADENGINE   package: 'rollup@4.9.2',
+   npm WARN EBADENGINE   required: { node: '>=18.0.0', npm: '>=8.0.0' },
+   npm WARN EBADENGINE   current: { node: 'v16.13.0', npm: '8.1.0' }
+   npm WARN EBADENGINE }
+   npm WARN EBADENGINE Unsupported engine {
+   npm WARN EBADENGINE   package: 'vite@5.1.4',
+   npm WARN EBADENGINE   required: { node: '^18.0.0 || >=20.0.0' },
+   npm WARN EBADENGINE   current: { node: 'v16.13.0', npm: '8.1.0' }
+   npm WARN EBADENGINE }
+
+   added 284 packages, and audited 285 packages in 17s
+
+   99 packages are looking for funding
+   run `npm fund` for details
+
+   found 0 vulnerabilities
+   ```
+
+4. Now you are ready to start the application using the start script inside the `package.json`. When working with the Vite development server on a remote server (e.g., flip3), there are different ways to start the server and access your application, depending on whether you need local access (on the remote server itself) or external access (from your own computer or the internet).
+
+   ### Option 1 - Local Only
+
+
+
+   ### OPTION 2 - Expose Network
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Running the Application
 
