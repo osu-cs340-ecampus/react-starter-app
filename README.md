@@ -256,11 +256,130 @@ Vite allows you to wrtie react code, start a development server with `npm start`
 
 4. Now you are ready to start the application using the start script inside the `package.json`. When working with the Vite development server on a remote server (e.g., flip3), there are different ways to start the server and access your application, depending on whether you need local access (on the remote server itself) or external access (from your own computer or the internet).
 
+To accomplish these options, this guide assumes that you are following the instructions for SSH through Vscode using the [Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) Vscode plugin. The instructions for setting up your ssh client can be found on the Canvas Practice Resources.
+
+With that being said, this magical VSCode plugin is able to auto-forward the ports from the remote flip server to your local machine. This means that when you start the development server on flip, VSCode can tunnel the server's port back to your local machine, so you can access it as if it were running locally via `localhost:PORT/` or `127.0.0.1:PORT/`. Please note that to view the URLs in both options below, you must be signed into the VPN.
+
    ### Option 1 - Local Only
+   When you start the Vite server using the standard `npm start` command, the server binds to `localhost` of the remote machine. The VSCode Remote - SSH plugin automatically detects this and sets up port forwarding, allowing you to access the server using `localhost` or `127.0.0.1` in your local machine's browser. This method keeps the server private to your local machine, and it cannot be viewed by anyone else except you.
+   ```sh
+   flip3 ~/react-starter-app/App/frontend 1003$ npm start
+
+   > cs340-react-starter-app@0.0.0 start
+   > vite
+
+
+   VITE v5.1.4  ready in 525 ms
+
+   ➜  Local:   http://127.0.0.1:8501/ or http://localhost:8501/
+   ➜  Network: use --host to expose
+   ➜  press h + enter to show help
+
+   h  # use h to see some options
+
+   Shortcuts
+   press r + enter to restart the server
+   press u + enter to show server url
+   press o + enter to open in browser
+   press c + enter to clear console
+   press q + enter to quit
+
+   q  # Use q to stop vite from running and return to the terminal.
+
+   flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1003$ ▌
+
+   ```
+
+   ### Option 2 - Expose to Network
+   If you need to share your development server with teammates or access it from devices other than your local machine, you can start the server with the `--host` option by running `npm start -- --host`. This tells Vite to listen on all network interfaces, making the server accessible via the remote server's public IP address. Note that VSCode will still forward this port, but now other devices can also access the server if they can reach the remote server's IP.
+
+   ```sh
+   flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1003$ npm start -- --host
+
+   > cs340-react-starter-app@0.0.0 start
+   > vite "--host"
+
+
+   VITE v5.1.4  ready in 1330 ms
+
+   ➜  Local:   http://localhost:8501/     or http://127.0.0.1:8501/
+   ➜  Network: http://128.193.36.41:8501/ or http://flip3.engr.oregonstate.edu:8501/ 
+   # Now anyone with the VPN can view your dev server at these network URLs
+   ➜  press h + enter to show help
+
+   h  # use h to see some options
+
+   Shortcuts
+   press r + enter to restart the server
+   press u + enter to show server url
+   press o + enter to open in browser
+   press c + enter to clear console
+   press q + enter to quit
+
+   q  # Use q to stop vite from running and return to the terminal.
+
+   flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1004$ 
+   ```
+
+   ### Important Note About Stopping Processes!
+   While testing the command `npm start -- --host`, it was observed that using `^C` to send the `SIGINT` signal does not always lead to a clean shutdown of the Vite development server. This is because `SIGINT` may not terminate child processes spawned by Vite, leading to the server process lingering in the background.
+
+   If you encounter issues where the server's port remains in use even after attempting to stop the server with `^C`, you can follow these steps for a more forceful shutdown:
+
+   1. Identify the lingering process:
+      - Use `lsof -i :<YOUR PORT>` to list all processes using the port.
+      - Alternatively, `ps -u $(whoami)` lists all your running processes, helping identify the PID of the node process for Vite.
+
+   2. Terminate the process:
+      - Use `kill -9 <PID>` to forcefully terminate the identified process. Replace `<PID>` with the actual process ID you found in the previous step.
+
+   **Note:** Always attempt to gracefully shut down the server using the built-in quit command (if available) or the standard `^C` method first. Resort to `kill -9` only when necessary as it terminates processes abruptly, without allowing them to clean up resources or perform a graceful shutdown. I discovered this when I exited out of my ssh session and I was still able to access my application running on `http://flip3.engr.oregonstate.edu:8501/` even though I had used `^C`. When I logged back into flip via ssh, upon trying to run `npm start -- --host` or `npm start` Vite would automatically tell me that port `8501` was still in use, and then it would start a new server on port `8502`.
+
+   ```sh
+   # use this command to see what the PID of the process is that is running on a specific port.
+   flip3 ~ 1009$ lsof -i :8501
+   COMMAND     PID  USER   FD   TYPE    DEVICE SIZE/OFF NODE NAME
+   node    2502508 maesz   22u  IPv6 357398260      0t0  TCP *:cmtp-mgt (LISTEN)
+   node    2502508 maesz   29u  IPv6 357423874      0t0  TCP flip3.engr.oregonstate.edu:cmtp-mgt->10-197-151-117.sds.oregonstate.edu:64081 (ESTABLISHED)
+   node    2502508 maesz   30u  IPv6 357944796      0t0  TCP flip3.engr.oregonstate.edu:cmtp-mgt->10-197-151-117.sds.oregonstate.edu:64620 (ESTABLISHED)
+
+   # use this command to see all of your running processes
+   flip3 ~ 1010$ ps -u $(whoami)
+       PID TTY          TIME CMD
+   2501520 ?        00:00:00 systemd
+   2501523 ?        00:00:00 (sd-pam)
+   2501554 ?        00:00:00 sshd
+   2501556 pts/393  00:00:00 bash
+   2502508 pts/393  00:00:03 node
+   2502541 pts/393  00:00:01 esbuild
+   2512357 ?        00:00:00 sh
+   2512428 ?        00:00:09 node
+   2513575 ?        00:00:04 node
+   2517189 ?        00:00:00 sshd
+   2517190 ?        00:00:00 bash
+   2517570 ?        00:00:00 bash
+   2517908 ?        00:00:18 node
+   2517920 ?        00:00:00 node
+   2518045 ?        00:00:04 node
+   2518267 ?        00:00:00 sshd
+   2518272 ?        00:00:00 bash
+   2518654 ?        00:00:00 bash
+   2518673 ?        00:00:00 code-903b1e9d89
+   2518719 ?        00:00:00 sh
+   2518721 pts/464  00:00:00 bash
+   2552243 pts/525  00:00:00 bash
+   2556916 ?        00:00:01 node
+   2574369 ?        00:00:00 sshd
+   2574370 pts/455  00:00:00 bash
+   2614401 ?        00:00:00 sleep
+   2615639 pts/455  00:00:00 ps
+
+   # use this command to kill the process with the PID
+   flip3 ~ 1011$ kill -9 2502508
+   ```
 
 
 
-   ### OPTION 2 - Expose Network
 
 
 
@@ -274,10 +393,7 @@ Vite allows you to wrtie react code, start a development server with `npm start`
 
 
 
-
-
-
-## Running the Application
+## Build and Deploy???
 
 [Explain how to run both the backend and frontend together, including any necessary commands.]
 
