@@ -385,7 +385,7 @@ With that being said, this magical VSCode plugin is able to auto-forward the por
 
 
 
-
+## PROD VS DEV dotenv explained...
 
 
 
@@ -396,6 +396,9 @@ With that being said, this magical VSCode plugin is able to auto-forward the por
 ## Build and Deploy???
 
 [Explain how to run both the backend and frontend together, including any necessary commands.]
+
+This video goes through a very simple react/express application that covers the philosophy of this build proocess.
+[Serve a React app from an Express server | React frontend and Express API setup in 1 project!](https://youtu.be/4pUBO31nkpk?si=3oeBA1u3tScOvNA0)
 
 ## Testing
 
