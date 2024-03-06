@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
@@ -11,10 +12,10 @@ const PORT = process.env.PORT || 3002;
 // http://localhost:5173 
 // http://flip3.engr.oregonstate.edu:5173
 app.use(cors({ credentials: true, origin: "*" }));
-app.use(cors());
+// app.use(cors());  // delete if app runs, probably not needed...
 app.use(express.json());
 
-// Routes:
+// API Routes for backend:
 app.use("/api/people", require("./routes/peopleRoutes"));
 
 app.listen(PORT, () => {

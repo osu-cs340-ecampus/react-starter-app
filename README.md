@@ -1,4 +1,27 @@
-# TL;DR
+# CS 340 React Starter Guide
+
+## Lingering Items (Delete)
+- link professor emails and Devin/Zac linkedin
+- ensure that github repo lets the public clone, but not commit/change main???
+- double check all package.jsons for accuracy in information
+- delete extra commented out cors line in server.js
+- change .envs to match the final port numbers and urls
+- Edit frontend tables to show better data and examples on how to JOIN and do other stuff
+- Edit frontend forms to match dynamic dropdown requirement and not use typed id numbers
+- Modify instructions to ensure that this works with Windows operating systems also.
+
+## Table of Contents
+- adsh
+- asdf
+1. adsfasdf
+2. asdflkaj
+
+## Contributions
+
+This guide was developed by Devin Daniels and Zachary Maes under the supervision of Dr. Michael Curry and Dr. Danielle Safonte.
+
+
+## TL;DR
 
 1. Clone the starter app repository: `git clone git@github.com:osu-cs340-ecampus/react-starter-app.git`
 2. Navigate to the `/App` directory: `cd react-starter-app/App`
@@ -12,7 +35,7 @@
    3. Launch the backend: `npm start`
 5. Begin your development journey: Happy Hacking!
 
-# Overview
+## Overview
 
 This guide is tailored for students enrolled in CS 340 who aim to develop their final project using React.js, Node/Express, and MySQL.
 
@@ -388,7 +411,10 @@ With that being said, this magical VSCode plugin is able to auto-forward the por
 ## PROD VS DEV dotenv explained...
 
 
-
+```sh
+flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1006$ touch .env.development
+flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1007$ touch .env.production
+```
 
 
 
@@ -399,6 +425,37 @@ With that being said, this magical VSCode plugin is able to auto-forward the por
 
 This video goes through a very simple react/express application that covers the philosophy of this build proocess.
 [Serve a React app from an Express server | React frontend and Express API setup in 1 project!](https://youtu.be/4pUBO31nkpk?si=3oeBA1u3tScOvNA0)
+
+
+
+Building the vite project
+```sh
+flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1022$ npm run build
+
+> cs340-react-starter-app@0.0.0 build
+> vite build
+
+vite v5.1.4 building for production...
+✓ 93 modules transformed.
+dist/index.html                   0.45 kB │ gzip:  0.30 kB
+dist/assets/index-vBDqSkg8.css    0.11 kB │ gzip:  0.11 kB
+dist/assets/index-bVtY9NLx.js   201.19 kB │ gzip: 67.30 kB
+✓ built in 6.16s
+flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1023$ 
+```
+
+
+serving the vite project:
+```sh
+flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1030$ npm run serve
+
+> cs340-react-starter-app@0.0.0 serve
+> node reactServer.cjs
+
+Server running:  http://flip3.engr.oregonstate.edu:6061...
+^C
+flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1031$ 
+```
 
 ## Testing
 
@@ -424,6 +481,3 @@ Please note that testing is outside the scope of this project and course and wil
 
 [Summarize the purpose of the guide and what students should have achieved upon completion.]
 
-## Contributions
-
-This guide was developed under the supervision of Dr. Michael Curry and Dr. Danielle Safonte, with contributions from Devin Daniels and Zachary Maes.
