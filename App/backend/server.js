@@ -12,7 +12,6 @@ const PORT = process.env.PORT || 3002;
 // http://localhost:5173 
 // http://flip3.engr.oregonstate.edu:5173
 app.use(cors({ credentials: true, origin: "*" }));
-// app.use(cors());  // delete if app runs, probably not needed...
 app.use(express.json());
 
 // API Routes for backend:
