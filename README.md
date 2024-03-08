@@ -198,9 +198,9 @@ Terminal: The built-in terminal in VSCode works great.
 
 ## Frontend Setup (Vite)
 
-This section will guide you through setting up the frontend part of your application using Vite and React. Create React App has traditionally been the go to way to develop a react project, but It has been deprecated (no longer is being update or has support). Vite is the more modern bundling solution, which is what we use in this project. It is highly recomended that you read the [documentation for Vite](https://vitejs.dev/guide/) to understand how it works. It is very similar to CRA so many tutorials for CRA are still appicable to Vite projects for when you are searching the web for help.
+This section will guide you through setting up the frontend part of your application using Vite and React. Create React App has traditionally been the go to way to develop a react project, but It has been deprecated (no longer being updated or has support). Vite is the more modern bundling solution, which is what we use in this project. It is highly recomended that you read the [documentation for Vite](https://vitejs.dev/guide/) to understand how it works. It is very similar to CRA so many tutorials for CRA are still appicable to Vite projects for when you are searching the web for help.
 
-Vite allows you to wrtie react code, start a development server with `npm start`, and build a static `/dist` folder to serve your finished application (more on this in a later section). The scripts for these can be found or modified inside the `package.json`. Now we will walk through how to get your development server set up and running.
+Vite allows you to write react code, start a development server with `npm start`, and build a static `/dist` folder to serve your finished application (more on this in a later section). The scripts for these can be found or modified inside the `package.json`. Now we will walk through how to get your development server set up and running.
 
 
 1. Navigate to the `/frontend` directory.
@@ -212,6 +212,7 @@ Vite allows you to wrtie react code, start a development server with `npm start`
    ```python
    VITE_API_URL='http://flip3.engr.oregonstate.edu:8500/api/'  # Change this url to match your backend express api url and port.
    VITE_PORT=8501  # Set a port number between:[1024 < PORT < 65535], this should not be the same as the API port.
+   REACT_SERVER_PORT=6061 # This is the port used in the /frontend/reactServer.js to host your '/dist' build folder... more on this later in the guide...
    ```
 
    The `VITE_API_URL` environment variable is used to fetch data from the backend api to this frontend application with axios in components like `PersonTable.jsx`. Here is a function from that file to demonstrate this:
@@ -392,8 +393,8 @@ With that being said, this magical VSCode plugin is able to auto-forward the por
    flip3 ~ 1011$ kill -9 2502508
    ```
 
-## Understadning Scripts in the `frontend/package.json` and `backend/package.json`
-The `package.json` files in both the `/frontend` and `/backend` directories of our project serve as a manifest for project settings, dependencies, and, importantly, scripts that automate tasks. These scripts are custom commands defined under the `"scripts"` property and can be executed using npm or npx, simplifying the development and deployment processes.
+## Understadning Terminal Commands and NPM Scripts in the `frontend/package.json` and `backend/package.json`
+The `package.json` files in both the `/frontend` and `/backend` directories of our project serve as a manifest for project settings, dependencies, and, importantly, scripts that automate tasks. These scripts are custom commands defined under the `"scripts"` property and can be executed using npm or npx, simplifying the development and deployment processes. In this section we will iteratively learn about the various ways you can start up a project server, and how these can be traslated into efficient npm scripts.
 
 ### Command - `node`
 
@@ -412,19 +413,25 @@ Now you might be saying to yourself, "Can't I just use `nodemeon` to solve this?
 
 Let's now look at how you would use `nodemon` in the traditional method. In your backend terminal, you would use the command `npx nodemon server.js` like this:
 ```sh
-flip3 ~/ula_cs340/winter24/react-starter-app/App/backend 1027$ npx nodemon server.js
+flip3 ~/react-starter-app/App/backend 1027$ npx nodemon server.js
 [nodemon] 3.0.2
 [nodemon] to restart at any time, enter `rs`
 [nodemon] watching path(s): *.*
 [nodemon] watching extensions: js,mjs,cjs,json
 [nodemon] starting `node server.js`
 Server running:  http://flip3.engr.oregonstate.edu:65432...
+
+# I made some changes and saved my code...
 [nodemon] restarting due to changes...
 [nodemon] starting `node server.js`
 Server running:  http://flip3.engr.oregonstate.edu:65432...
+
+# I made some changes and saved my code...
 [nodemon] restarting due to changes...
 [nodemon] starting `node server.js`
 Server running:  http://flip3.engr.oregonstate.edu:65432...
+
+# I made some changes and saved my code...
 [nodemon] restarting due to changes...
 [nodemon] starting `node server.js`
 Server running:  http://flip3.engr.oregonstate.edu:65432...
@@ -437,7 +444,9 @@ This now allows us to utilize `nodemon's` hot module reloding (HMR) which automa
 
 The package `forever` allows us to run multiple processes forever which will run outside of a terminal or ssh instance. This package is currently already listed in both `frontend/package.json` and `backend/package.json` dependencies, so when you ran `npm install` earlier, it should have installed that in both `/frontend` and `/backend` for you to be able to access. If for some reason this didn't happen, you can install it directly with `npm install forever --save`.
 
-For reasons beyond your control, running `forever` is a bit more complex on the school's FLIP server. Here is how to make it easy, run the following command from the root of your project:
+> You must run any forever commands from the root of your project (where server.js is located). If you don't it will fail. For this project, that is `/backend` or `/frontend`
+
+For reasons beyond your control, running `forever` is a bit more complex on the school's FLIP server. Here is how to make it easy, run the following command from the root of your project (`/backend` or `/frontend`):
 
 ```bash
 alias forever='./node_modules/forever/bin/forever'
@@ -445,22 +454,23 @@ alias forever='./node_modules/forever/bin/forever'
 
 Now, whenever you run `forever` from the *root* of any project that has the forever dependency installed, it will work, without fail. If you want to make this more permanent (not absolutely permanent), you can add this as a line towards the end of the `~/.bashrc` file in your home directory (notice the ~ squiggly) on the OSU FLIP server.
 
-> You must run the forever command from the root of your project (where server.js is located). If you don't it will fail.
 
 Now that we have `forever` installed, let's look at the commands that you might use.
 
 ### Command - `forever start server.js`
 
-Running the command `forever start server.js`, is similar to running the command `node server.js` that we learned about prior to this. The only difference is that it does not run in the foreground of our terminal, but instead runs in the background. You can see below how our terminal prompt returns to the screen for us to be able to type further commands of our choice. Runing `forever start server.js` can be done for any nodejs application that you want to start up.
+Running the command `forever start server.js`, is similar to running the command `node server.js` that we learned about prior to this. A difference is that it does not run in the foreground of our terminal, but instead runs in the background. Another difference is that `forever` will automatically restart your application if there are any issues. With this command you can safely exit out of your flip ssh session and submit urls to canvas for other to view them. You can see below how our terminal prompt returns to the screen for us to be able to type further commands of our choice. Runing `forever start server.js` can be done for any nodejs application that you want to start up.
 
 ```sh
 flip3 ~/react-starter-app/App/backend 1032$ forever start server.js 
+# I have found that these warnings can be safely ignored...so far...
 warn:    --minUptime not set. Defaulting to: 1000ms
 warn:    --spinSleepTime not set. Your script will exit if it does not stay up for at least 1000ms
 info:    Forever processing file: server.js
 (node:4115889) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
 (Use `node --trace-warnings ...` to show where the warning was created)
 (node:4115889) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+
 flip3 ~/react-starter-app/App/backend 1033$ ▌  # we can continue to do things in the terminal prompt!
 ```
 
@@ -472,26 +482,29 @@ flip3 ~/react-starter-app/App/backend 1002$ forever list
 (node:4144017) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
 (Use `node --trace-warnings ...` to show where the warning was created)
 (node:4144017) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+
 info:    Forever processes running
 data:        uid  command                                                    script    forever pid     id logfile                                 uptime      
 data:    [0] z8Fa /nfs/stak/users/maesz/.nvm/versions/node/v16.13.0/bin/node server.js 4143975 4144005    /nfs/stak/users/maesz/.forever/z8Fa.log 0:0:0:2.781 
 flip3 ~/react-starter-app/App/backend 1003$ ▌
 ```
-Depending on what you have running, this might show multiple processes. Take note of the index value for this process which is `[0]`, you will need this in the next section...
+Depending on what you have running, this might show multiple processes. There are many values that you can look at here including the location of your logs at `logfile`, but also take note of the index value for this process which is `[0]`, you will need this in the next section...
 
 ### Command - `forever stop <index>`
-If you need to stop a process, like the one running above at index `[0]`, you can use the command `forever stop 0` to accomplish this:
+If you need to stop a process, like the one running above at index `[0]`, you can use the command `forever stop <index>` (ie - `forever stop 0`) to accomplish this:
 
 ```sh
 flip3 ~/react-starter-app/App/backend 1012$ forever stop 0
 (node:4147301) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
 (Use `node --trace-warnings ...` to show where the warning was created)
 (node:4147301) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+
 info:    Forever stopped process:
     uid  command                                                    script    forever pid     id logfile                                 uptime      
 [0] 30Nc /nfs/stak/users/maesz/.nvm/versions/node/v16.13.0/bin/node server.js 4147194 4147226    /nfs/stak/users/maesz/.forever/30Nc.log 0:0:0:5.311 
 flip3 ~/react-starter-app/App/backend 1013$ ▌
 ```
+This command can be used to stop any of the indexes (0, 1, 2, 3 , etc.)
 
 ### Command - `forever restart <index>`
 
@@ -502,21 +515,23 @@ flip3 ~/react-starter-app/App/backend 1027$ forever restart 0
 (node:4158785) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
 (Use `node --trace-warnings ...` to show where the warning was created)
 (node:4158785) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+
 info:    Forever restarted process(es):
 data:        uid  command                                                    script    forever pid     id logfile                                 uptime      
 data:    [0] QH6j /nfs/stak/users/maesz/.nvm/versions/node/v16.13.0/bin/node server.js 4158690 4158716    /nfs/stak/users/maesz/.forever/QH6j.log 0:0:0:5.315 
 flip3 ~/react-starter-app/App/backend 1028$ ▌
 ```
 
-This command can be used to stop any of the indexes (0, 1, 2, 3 , etc.)
+This command can be used to restart any of the indexes (0, 1, 2, 3 , etc.)
 
 ### Command - `forever stopall`
-This command will stop every single forever process that is running, use with caution! You will notice below that I happened to have four processes running and it stopped all of them. Again, use with caution!!
+This command will stop every single forever process that is running, **use with caution!** You will notice below that I happened to have four processes running and it stopped all of them. Again, **use with caution!!**
 ```sh
 flip3 ~/react-starter-app/App/backend 1024$ forever stopall
 (node:4155732) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
 (Use `node --trace-warnings ...` to show where the warning was created)
 (node:4155732) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+
 info:    No forever processes running
 info:    Forever stopped processes:
 data:        uid  command                                                    script                          forever pid     id logfile                                 uptime                   
@@ -527,23 +542,11 @@ data:    [3] eoEG /nfs/stak/users/maesz/.nvm/versions/node/v16.13.0/bin/node dat
 flip3 ~/react-starter-app/App/backend 1025$ ▌
 ```
 
+As you can see, `forever` is a very powerful tool that can help us while we develop the react application. Now let's take a look at how npm scripts will help us to simplify all these commands.
 
+### NPM Scripts Inside the `/backend/package.json`
 
-
-
-
-
-
-
-
-
-
-
-
-
-let's take a look at how npm scripts will help us...
-
-Inside our various `package.json` files we can name and define any script that we want the `npm` command to execute. Here is part of the `backend/package.json` file:
+Inside our various `package.json` files we can name and define any script that we want the `npm` command to execute. Here is part of the `backend/package.json` file where I have created two custom scripts called `"start"` and `"serve"`:
 ```json
 {
   "name": "cs340-react-starter-app-backend",
@@ -557,14 +560,64 @@ Inside our various `package.json` files we can name and define any script that w
   },
   ...
 ```
+### Command - `npm run start`
+If we run the command `npm run start`, node package manager will look inside the `"scripts"` section of the `package.json` and find the `"start"` command `nodemon server.js`. Notice how we are utilizing `nodemon` to take advantage of its development features like HMR. `npm run start` will be the command that you run to start the backend server while you are actively working on code. This command will NOT permanently serve the api. So if you ran `npm run start` (ie `nodemon`) and exited out of the flip ssh session, your server would no longer be running.
 
-If we run the command `npm run start`, node package manager will look inside the `"scripts"` section of the `package.json` and find the `"start"` command `nodemon server.js`. Notice how we are utilizing `nodemon` to take advantage of its development features like HMR. `npm run start` will be the command that you run to start the backend server while you are actively working on code. This command will NOT permanently serve the api. When you need a url to stay active for days (in the case of submitting a project step), you will need to utilize the next script...
+```sh
+flip3 ~/react-starter-app/App/backend 1004$ npm run start
 
-If you run the command `npm run serve`
+> cs340-react-starter-app-backend@1.0.0 start
+> nodemon server.js
 
+[nodemon] 3.0.2
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,cjs,json
+[nodemon] starting `node server.js`
+Server running:  http://flip3.engr.oregonstate.edu:65432...
+▌
+```
 
+### Command - `npm run serve`
 
-Frontend Scripts
+When you need a url to stay active for days (in the case of submitting a project step), you will need to utilize the `"serve"` script which is basically just the command `npx forever start server.js`. As we learned in the prior section, forever will allow our program to run continuously in the background and restart it if necessary. To utilize this npm script, you will run the command `npm run serve` like this:
+
+```sh
+flip3 ~/react-starter-app/App/backend 1011$ npm run serve
+
+> cs340-react-starter-app-backend@1.0.0 serve
+> npx forever start server.js
+
+warn:    --minUptime not set. Defaulting to: 1000ms
+warn:    --spinSleepTime not set. Your script will exit if it does not stay up for at least 1000ms
+info:    Forever processing file: server.js
+(node:764027) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:764027) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+flip3 ~/ula_cs340/winter24/react-starter-app/App/backend 1012$ 
+▌
+```
+> The `npx` could potentially cause issues for some of you. If it does not work you could try editing the `"serve"` script in the `backend/package.json` to look like this: `"serve": "forever start server.js"` which just removes the `npx` command.
+
+Now you should have a solid understanding of all the commands and scripts that can be used to run the `/backend` server. We will now take a closer look at the scripts specific to the `/frontend` vite react project.
+
+### NPM Scripts Inside the `/frontend/package.json`
+We already coverd the `"start"` script in a prior section. In our `/frontend/package.json` you will notice a lot of other scripts that will be very useful for development.
+```json
+{
+  "name": "cs340-react-starter-app-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "npx forever start reactServer.cjs",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+```
+- The "start" script calls a comma
 In the cs340-react-starter-app-frontend directory, the package.json includes several scripts designed to facilitate development and deployment:
 
 start: Runs the Vite development server, enabling live reloading for development.
