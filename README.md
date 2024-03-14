@@ -49,6 +49,8 @@ Key Assumptions:
 3. You are adept at using terminal commands like `cd`, `ls`, `mkdir`, etc.
 4. Access to OSU's flip servers and a MySQL database is available to you.
    - Note: Adaptations for local development are possible and outlined in this guide.
+5. You have some familiarity with react hooks like `useState()` and `useEffect()`.
+   - The code in this guide uses these hooks for state management and network requests. Examples of these are provided and described, but you may need to do more research for a better understanding of how they work.
 
 ## Introduction
 
@@ -208,10 +210,10 @@ Vite allows you to write react code, start a development server with `npm start`
    flip3 ~/react-starter-app/App 1006$ cd frontend
    ```
 
-2. Modify the fronted `.env` file so that `VITE_API_URL` matches the backend api url you created in the prior steps. Also modify the frontend `VITE_PORT` for your dev server to run on.
+2. Modify the fronted `.env` file so that `VITE_API_URL` matches the backend api url you created in the prior steps. Also modify the frontend `VITE_PORT` for your dev server to run on. We will cover the 
    ```python
    VITE_API_URL='http://flip3.engr.oregonstate.edu:8500/api/'  # Change this url to match your backend express api url and port.
-   VITE_PORT=8501  # Set a port number between:[1024 < PORT < 65535], this should not be the same as the API port.
+   VITE_PORT=8501  # Set a port number between:[1024 < PORT < 65535], this should NOT be the same as the API port.
    REACT_SERVER_PORT=6061 # This is the port used in the /frontend/reactServer.js to host your '/dist' build folder... more on this later in the guide...
    ```
 
@@ -275,9 +277,9 @@ To accomplish these options, this guide assumes that you are following the instr
 With that being said, this magical VSCode plugin is able to auto-forward the ports from the remote flip server to your local machine. This means that when you start the development server on flip, VSCode can tunnel the server's port back to your local machine, so you can access it as if it were running locally via `localhost:PORT/` or `127.0.0.1:PORT/`. Please note that to view the URLs in both options below, you must be signed into the VPN.
 
    ### Option 1 - Local Only
-   When you start the Vite server using the standard `npm start` command, the server binds to `localhost` of the remote machine. The VSCode Remote - SSH plugin automatically detects this and sets up port forwarding, allowing you to access the server using `localhost` or `127.0.0.1` in your local machine's browser. This method keeps the server private to your local machine, and it cannot be viewed by anyone else except you.
+   When you start the Vite server using the standard `npm run start` command, the server binds to `localhost` of the remote machine. The VSCode Remote - SSH plugin automatically detects this and sets up port forwarding, allowing you to access the server using `localhost` or `127.0.0.1` in your local machine's browser. This method keeps the server private to your local machine, and it cannot be viewed by anyone else except you.
    ```sh
-   flip3 ~/react-starter-app/App/frontend 1003$ npm start
+   flip3 ~/react-starter-app/App/frontend 1003$ npm run start
 
    > cs340-react-starter-app@0.0.0 start
    > vite
@@ -464,6 +466,7 @@ Running the command `forever start server.js`, is similar to running the command
 ```sh
 flip3 ~/react-starter-app/App/backend 1032$ forever start server.js 
 # I have found that these warnings can be safely ignored...so far...
+# The warnings will show up every time you run a forever command, they have not caused breaking issues for me yet...
 warn:    --minUptime not set. Defaulting to: 1000ms
 warn:    --spinSleepTime not set. Your script will exit if it does not stay up for at least 1000ms
 info:    Forever processing file: server.js
@@ -560,7 +563,7 @@ Inside our various `package.json` files we can name and define any script that w
   },
   ...
 ```
-### Command - `npm run start`
+### Command - npm run start
 If we run the command `npm run start`, node package manager will look inside the `"scripts"` section of the `package.json` and find the `"start"` command `nodemon server.js`. Notice how we are utilizing `nodemon` to take advantage of its development features like HMR. `npm run start` will be the command that you run to start the backend server while you are actively working on code. This command will NOT permanently serve the api. So if you ran `npm run start` (ie `nodemon`) and exited out of the flip ssh session, your server would no longer be running.
 
 ```sh
@@ -601,8 +604,10 @@ flip3 ~/ula_cs340/winter24/react-starter-app/App/backend 1012$
 
 Now you should have a solid understanding of all the commands and scripts that can be used to run the `/backend` server. We will now take a closer look at the scripts specific to the `/frontend` vite react project.
 
+
 ### NPM Scripts Inside the `/frontend/package.json`
-We already coverd the `"start"` script in a prior section. In our `/frontend/package.json` you will notice a lot of other scripts that will be very useful for development.
+<!-- I am unable to get the anchor tag for npm run start working... -->
+We already covered the `"start"` script in a the prior section [Command - npm run start](#Command--npm-run-start). In our `/frontend/package.json` you will notice a lot of other scripts that will be very useful for development. Again, you are allowed to modify these scripts to your needs, but I would recommend leaving the `"start"` and `"build"` commands as is because they are utilizing built in vite tooling.
 ```json
 {
   "name": "cs340-react-starter-app-frontend",
@@ -617,33 +622,98 @@ We already coverd the `"start"` script in a prior section. In our `/frontend/pac
     "preview": "vite preview"
   },
 ```
-- The "start" script calls a comma
-In the cs340-react-starter-app-frontend directory, the package.json includes several scripts designed to facilitate development and deployment:
 
-start: Runs the Vite development server, enabling live reloading for development.
-build: Compiles the project for production deployment, optimizing for performance.
-serve: Starts the built application using forever, ensuring that it runs continuously, even after a crash or server reboot.
-lint: Analyzes the code for potential errors and style violations, ensuring code quality.
-preview: Serves the production build locally for testing before deployment.
-To run a script, use the npm run command followed by the script name. For example, to start the development server, you would execute:
+#### `"start": "vite"`
+- **What It Does:** This script starts a local development server for your Vite React application.
+- **How It Works:** By running `npm run start`, Vite serves your application with hot module replacement (HMR), which means your changes will be updated live without needing to refresh your browser. This essentially runs the terminal command `vite`.
+- **Use Case:** Use this command while actively developing your application to see your changes in real-time.
+- This was covered in the prior [Option 1 - Local Only section](#option-1---local-only)
 
-sh
+#### `"build": "vite build"`
+- **What It Does:** Builds your application for production.
+- **How It Works:** Running `npm run build` compiles your React application into static files optimized for production, typically into a `/dist` directory.
+- **Use Case:** Run this script when you are ready to deploy your application, creating a version that's optimized for speed and efficiency.
+- This is explained more specifically in the next [Build and Deploy Section](#build-and-deploy)
+
+#### `"serve": "npx forever start reactServer.cjs"`
+- **What It Does:** Uses `forever` to serve your production build continuously via a custom express application called `reactServer.cjs`. 
+   - Note: commonJS is required here because of our package.json definition of `"type": "module"`. It is also possible to use ES6, but that is not covered in this guide.
+- **How It Works:** After building your application with `npm run build`, run this script `npm run serve` to start the api `reactServer.cjs` that serves your built application located in the `/dist` folder. The forever tool ensures that this server runs continuously, even if the script crashes or the server is restarted.
+- **Use Case:** Ideal for when you need your built application to be accessible over the internet for extended periods (For example, when submitting a project step).
+- This is explained more specifically in the next [Build and Deploy Section](#build-and-deploy)
+
+#### `"lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"` (NOT REQUIRED TO USE)
+- **What It Does:** Lints your JavaScript and JSX files to ensure code quality and consistency.
+- **How It Works:** This script runs ESLint on all .js and .jsx files in your project, enforcing your coding standards. Run it with `npm run lint`. The --report-unused-disable-directives flag reports ESLint disable comments that don't actually suppress any errors, and --max-warnings 0 treats warnings as errors, failing the script if any are found.
+- **Use Case:** Run this command to check for and fix linting errors in your codebase, ideally before committing your code. 
+- This is automatically provided by vite and is not required, but you might find useful. This guide will not discuss this script further, use at your own risk.
+
+#### `"preview": "vite preview"` (NOT REQUIRED TO USE)
+- **What It Does:** Serves your production build locally for testing.
+- **How It Works:** After building your project with `npm run build`, this script serves the production version of your application from a local server, allowing you to test the built site before deploying it. Run this with `npm run preview`.
+- **Use Case:** Use this to preview the final version of your site in a production-like environment, verifying that everything works as expected before an actual deployment. 
+- This is automatically provided by vite and is not required, but you might find useful. This guide will not discuss this script further, use at your own risk.
 
 
-## Forever commands
+Remember, you can always edit these scripts to fit your project needs. These are not set in stone, and they are more like preferences that you get to decide on. For example, you might find that you are not using `forever` but instead using `pm2` (not covered in this guide). This would require you to change the `"serve"` script to reflect your use of the `pm2` package. In theory you can create and name any script you want. For example, if you wanted to use `nodemon` to test if `reactServer.cjs` is working prior to serving it with `forever`, you would create a new script inside the package.json file like this: `"nodemon-server": "nodemon reactServer.cjs"` and then run it in the terminal with the command `npm run nodemon-server`.
+> Implementing the nodemon-server script will be left as an exercise for the student. It may require additional configuration.
+
+Now that we have a high level overview of the `/frontend` npm scripts, let's take a closer look at how the `"build"` and `"serve"` script will work for this react project.
 
 ## Build and Deploy
 
-[Explain how to run both the backend and frontend together, including any necessary commands.]
+There are hundreds of ways to serve your applications which include but are not limited to the flip servers, netlify, vercel, heroku, google cloud, or even hardware solutions like raspberry pis. This guide will show you how to serve specifically with vite, express, forever, and the flip server. You essentially build your react application with `vite build` then statically serve the build folder (`/dist`) using the express server `reactServer.cjs`. This express server will run in parallel to your `/backend` express mariadb server that we configured in the prior section. At the end of the day, you are running two servers at two different ports.
 
-This video goes through a very simple react/express application that covers the philosophy of this build proocess.
+This video goes through a very simple react/express application that covers the philosophy of this build process for the frontend server.
 [Serve a React app from an Express server | React frontend and Express API setup in 1 project!](https://youtu.be/4pUBO31nkpk?si=3oeBA1u3tScOvNA0)
 
+If you have not done so already, open up your `/frontend/.env` file and set a port number for the `REACT_SERVER_PORT` variable and save the file. If you recall from the [Frontend Setup (Vite) section](#frontend-setup-vite), our .env file sould look like this (change the ports to ones you are going to use)
+   ```python
+   VITE_API_URL='http://flip3.engr.oregonstate.edu:8500/api/'  # Change this url to match your backend express api url and port.
+   VITE_PORT=8501  # Set a port number between:[1024 < PORT < 65535], this should NOT be the same as the API port.
+   REACT_SERVER_PORT=6061 # This is the port used in the /frontend/reactServer.js to host your '/dist' build folder. [1024 < PORT < 65535]
+   ```
 
+Looking inside of the file `reactServer.cjs`, we will find a very small express server that has one function. This will server our static build files located inside the `/dist` folder.
 
-Building the vite project
+#### reactServer.cjs:
+```js
+// reactServer.cjs
+// Uses common javascript to serve the react build folder (/dist)
+
+const express = require('express');
+const path = require('path');
+const app = express();
+require("dotenv").config();
+
+// Use the custom 'REACT_SERVER_PORT' port from .env, with a fallback to 3001
+const PORT = process.env.REACT_SERVER_PORT || 3001;
+
+// Serve the static files from the React app located in the build folder '/dist'
+// React router will take over frontend routing
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// Handles any requests that don't match the ones above to return the React app
+// A request to '/nonExist' will redirect to the index.html where react router takes over at '/'
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+});
+
+app.listen(PORT, () => {
+    // Change this text to whatever FLIP server you're on
+    console.log(`Server running:  http://flip3.engr.oregonstate.edu:${PORT}...`);
+  });
+```
+
+Please take notice of two things here in the `reactServer.cjs`:
+1. We create a `PORT` variable for the server to run on that peers into our .env file and pulls out the dotenv variable `REACT_SERVER_PORT` that we just defined.
+2. We use `app.use(...)` and `app.get('*', ...)` to point every url endpoint to our static files located at `/dist` and that folder's `index.html`.
+
+We will see how this works soon, but first we must build our `/dist` folder. Use the command `npm run build` to do this.
+
 ```sh
-flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1022$ npm run build
+# Build the '/dist' folder...
+flip3 ~/react-starter-app/App/frontend 1022$ npm run build
 
 > cs340-react-starter-app@0.0.0 build
 > vite build
@@ -654,9 +724,11 @@ dist/index.html                   0.45 kB │ gzip:  0.30 kB
 dist/assets/index-vBDqSkg8.css    0.11 kB │ gzip:  0.11 kB
 dist/assets/index-bVtY9NLx.js   201.19 kB │ gzip: 67.30 kB
 ✓ built in 6.16s
-flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1023$ ▌
+flip3 ~/react-starter-app/App/frontend 1023$ ▌
 ```
+> You should now see a `/dist` folder was created in the `/frontend` directory!
 
+Every time you run the command `npm run build` it will replace your old `/dist` with a new version containing all of your newly saved react code and assets. Be careful with this command becasue you will lose the old version of `/dist` that you may have running on your server. 
 
 serving the vite project:
 ```sh
