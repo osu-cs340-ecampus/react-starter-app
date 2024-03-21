@@ -1,14 +1,11 @@
 # CS 340 React Starter Guide
 
-## Lingering Items (Delete)
-- link professor emails and Devin/Zac linkedin
+## Upgrades for Next Version
 - ensure that github repo lets the public clone, but not commit/change main???
-- double check all package.jsons for accuracy in information
-- delete extra commented out cors line in server.js
-- change .envs to match the final port numbers and urls
+- Re-build to ensure new ports work on dist
 - Edit frontend tables to show better data and examples on how to JOIN and do other stuff
 - Edit frontend forms to match dynamic dropdown requirement and not use typed id numbers
-- Modify instructions to ensure that this works with Windows operating systems also.
+- Currently a tutorial for flip servers only. Modify instructions to ensure that this works with Windows or mac operating systems also.
 
 ## Table of Contents
 1. [Contributions](#contributions)
