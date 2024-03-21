@@ -813,7 +813,7 @@ Here are some images of what the stock build of this website will look like.
 ![Update Person](images-readme/updateperson.png)
 
 
-## Testing
+<!-- ## Testing
 
 Please note that testing is outside the scope of this project and course and will not be covered in this guide.
 
@@ -832,5 +832,5 @@ Please see the git and github guide and videos on Canvas.
 
 ## Conclusion
 
-[Summarize the purpose of the guide and what students should have achieved upon completion.]
+[Summarize the purpose of the guide and what students should have achieved upon completion.] -->
 
