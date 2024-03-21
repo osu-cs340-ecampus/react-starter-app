@@ -11,8 +11,14 @@
 - Modify instructions to ensure that this works with Windows operating systems also.
 
 ## Table of Contents
-- adsh
-- asdf
+[Contributions](#Contributions)
+[TLDR](#TLDR)
+[Overview](#Overview)
+[Getting Started](#Getting-Started)
+[]()
+[]()
+[]()
+[]()
 1. adsfasdf
 2. asdflkaj
 
@@ -21,23 +27,24 @@
 This guide was developed by [Devin Daniels](https://github.com/devingdaniels) and [Zachary Maes](https://github.com/zacmaes) under the supervision of [Dr. Michael Curry](mailto:michael.curry@oregonstate.edu) and [Dr. Danielle Safonte](mailto:danielle.safonte@oregonstate.edu).
 
 
-## TL;DR
-
+## TLDR
+Assuming you are ssh logged into flip or classwork osu servers. To view the application you must be logged into the osu vpn service.
 1. Clone the starter app repository: `git clone git@github.com:osu-cs340-ecampus/react-starter-app.git`
+   - Follow the git guide on canvas, you may need a git 
 2. Navigate to the `/App` directory: `cd react-starter-app/App`
 3. Set up the frontend:
-   1. Change directory to frontend: `cd frontend`
-   2. Install necessary packages: `npm install`
-   3. Launch the frontend: `npm start`
+   - Change directory to frontend: `cd frontend`
+   - Install necessary packages: `npm install`
+   - Launch the frontend: `npm start`
 4. Set up the backend:
-   1. Change directory to backend: `cd ../backend` 
-   2. Install necessary packages: `npm install`
-   3. Launch the backend: `npm start`
+   - Change directory to backend: `cd ../backend` 
+   - Install necessary packages: `npm install`
+   - Launch the backend: `npm start`
 5. Begin your development journey: Happy Hacking!
 
 ## Overview
 
-This guide is tailored for students enrolled in CS 340 who aim to develop their final project using React.js, Node/Express, and MySQL.
+This guide is tailored for students enrolled in CS 340 who aim to develop their final project using React.js, Node/Express, and MySQL. The goal of this repo is to provide you with the basic structure of a React/Vite + Express/Node full-stack application, including a few example SQL queries.
 
 The starter code provided in this guide encompasses essential components such as tool setup, infrastructure for building and running your application, and guidelines for deploying your application to OSU's Flip server.
 
@@ -52,10 +59,6 @@ Key Assumptions:
 5. You have some familiarity with react hooks like `useState()` and `useEffect()`.
    - The code in this guide uses these hooks for state management and network requests. Examples of these are provided and described, but you may need to do more research for a better understanding of how they work.
 
-## Introduction
-
-The goal of this repo is to provide you with the basic structure of a React/Vite + Express/Node full-stack application, including a few example SQL queries.
-
 ## Getting Started
 
 IDE: Visual Studio Code
@@ -65,6 +68,10 @@ Browser: Chrome or Firefox are recommended, though other browsers will probably 
 VScode SSH extension: [Visual Studio Code SSH Documentation](https://code.visualstudio.com/docs/remote/ssh)
 
 Terminal: The built-in terminal in VSCode works great.
+
+Flip Server: flip 1-4 or classwork servers and ports associated with those [1024 < PORT < 65535]
+
+OSU VPN: Access to vpn services (see canvas) required for viewing links on flip.
 
 ## Backend Setup (Node.js/Express)
 
