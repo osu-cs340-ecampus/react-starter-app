@@ -28,7 +28,7 @@ This guide was developed by [Devin Daniels](https://github.com/devingdaniels) an
 ## TLDR
 Assuming you are ssh logged into flip or classwork osu servers. To view the application you must be logged into the osu vpn service.
 1. Clone the starter app repository: `git clone git@github.com:osu-cs340-ecampus/react-starter-app.git`
-   - Follow the git guide on canvas, you may need a git
+   - Follow the git guide on canvas, you may need a github personal access token
 
 2. Navigate to the `/App` directory: `cd react-starter-app/App`
 
