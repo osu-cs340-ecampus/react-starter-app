@@ -224,9 +224,24 @@ Vite allows you to write react code, start a development server with `npm start`
 
 2. Modify the fronted `.env` file so that `VITE_API_URL` matches the backend api url you created in the prior steps. Also modify the frontend `VITE_PORT` for your dev server to run on. We will cover the 
    ```python
-   VITE_API_URL='http://flip3.engr.oregonstate.edu:8500/api/'  # Change this url to match your backend express api url and port.
+   # Vite environment variables
+
+   # Note: Every team member should have their own version of this file locally. Do not commit this to github 
+   # in real world development scenarios, this may contain sensitve keys, that is why this is listed on .gitignore
+
+   # PLEASE CHANGE THE PORTS TO YOUR LIKING ... between:[1024 < PORT < 65535]
+   #    Remember: only one person can use a port at a time
+
+   # This is the port used for your vite development server with `npm start` or `npm run dev`. That is configured in the the file vite.config.js
+   # When you run `npm start` or `npm run dev` you can access your website on port 8501. Change this to your liking.
    VITE_PORT=8501  # Set a port number between:[1024 < PORT < 65535], this should NOT be the same as the API port.
+
+   # This is the port used in the /frontend/reactServer.js to host your '/dist' build folder after running 'npm build', change this to your liking.
    REACT_SERVER_PORT=6061 # This is the port used in the /frontend/reactServer.js to host your '/dist' build folder... more on this later in the guide...
+
+   # This is the url that points to your 'backend/server.js' and you must change the flip number and port to match what you set up there.
+   # This url is where your SQL server code recieves and sends CRUD operations.
+   VITE_API_URL='http://flip3.engr.oregonstate.edu:8500/api/'  # Change this url to match your backend express api url and port.
    ```
 
    The `VITE_API_URL` environment variable is used to fetch data from the backend api to this frontend application with axios in components like `PersonTable.jsx`. Here is a function from that file to demonstrate this:
