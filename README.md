@@ -746,14 +746,34 @@ Every time you run the command `npm run build` it will replace your old `/dist` 
 
 Now that you have built your `/dist` folder, this static build can be served hundreds of different ways. Since we are already running the express backend on a different flip port, we will use our frontend express server `reactServer.cjs` to serve the `/dist` build folder at a port of our choosing. There is a serve command built into the frontend package.json that will automatically use forever to start up `reactServer.cjs`.
 ```sh
-flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1030$ npm run serve
+# Serve the frontend dist build
+flip1 ~/react-starter-app/App/frontend 583$ npm run serve
 
-> cs340-react-starter-app@0.0.0 serve
-> node reactServer.cjs
+> cs340-react-starter-app-frontend@0.0.0 serve
+> npx forever start reactServer.cjs
 
-Server running:  http://flip3.engr.oregonstate.edu:6061...
-^C
-flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1031$ ▌
+warn:    --minUptime not set. Defaulting to: 1000ms
+warn:    --spinSleepTime not set. Your script will exit if it does not stay up for at least 1000ms
+info:    Forever processing file: reactServer.cjs
+(node:1702055) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1702055) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+flip1 ~/react-starter-app/App/frontend 584$ ▌
+```
+
+> Assuming that you have the backend server running, if you run the command `forever list` you should see both processes for frontend and backend.
+
+> Your Website is now visible at the flip server and port number that you set up in `.env`.
+```sh
+flip1 ~/react-starter-app/App/frontend 584$ forever list
+(node:1702689) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1702689) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+info:    Forever processes running
+data:        uid  command                                                    script          forever pid     id logfile                                 uptime                    
+data:    [0] xdT7 /nfs/stak/users/maesz/.nvm/versions/node/v16.13.0/bin/node server.js       1701949 1701965    /nfs/stak/users/maesz/.forever/xdT7.log 0:0:10:59.63900000000001  
+data:    [1] 9f1d /nfs/stak/users/maesz/.nvm/versions/node/v16.13.0/bin/node reactServer.cjs 1702085 1702100    /nfs/stak/users/maesz/.forever/9f1d.log 0:0:10:41.789999999999964 
+flip1 ~/react-starter-app/App/frontend 585$ ▌
 ```
 
 ## Build and API Served With Forever
