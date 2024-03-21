@@ -11,16 +11,15 @@
 - Modify instructions to ensure that this works with Windows operating systems also.
 
 ## Table of Contents
-[Contributions](#Contributions)
-[TLDR](#TLDR)
-[Overview](#Overview)
-[Getting Started](#Getting-Started)
-[]()
-[]()
-[]()
-[]()
-1. adsfasdf
-2. asdflkaj
+1. [Contributions](#contributions)
+2. [TLDR](#tldr)
+3. [Overview](#overview)
+4. [Getting Started](#getting-started)
+5. [Backend Setup (Node.js/Express)](#backend-setup-nodejsexpress)
+6. [Frontend Setup (Vite)](#frontend-setup-vite)
+7. [Understanding Terminal Commands and NPM Scripts](#understanding-terminal-commands-and-npm-scripts)
+8. [Build and Deploy](#build-and-deploy)
+9. [Screenshots of Build and API Served With Forever](#build-and-api-served-with-forever)
 
 ## Contributions
 
@@ -402,7 +401,7 @@ With that being said, this magical VSCode plugin is able to auto-forward the por
    flip3 ~ 1011$ kill -9 2502508
    ```
 
-## Understadning Terminal Commands and NPM Scripts in the `frontend/package.json` and `backend/package.json`
+## Understanding Terminal Commands and NPM Scripts
 The `package.json` files in both the `/frontend` and `/backend` directories of our project serve as a manifest for project settings, dependencies, and, importantly, scripts that automate tasks. These scripts are custom commands defined under the `"scripts"` property and can be executed using npm or npx, simplifying the development and deployment processes. In this section we will iteratively learn about the various ways you can start up a project server, and how these can be traslated into efficient npm scripts.
 
 ### Command - `node`
