@@ -1,11 +1,13 @@
 # CS 340 React Starter Guide
 
+<!--
 ## Upgrades for Next Version
 - ensure that github repo lets the public clone, but not commit/change main???
 - Re-build to ensure new ports work on dist
 - Edit frontend tables to show better data and examples on how to JOIN and do other stuff
 - Edit frontend forms to match dynamic dropdown requirement and not use typed id numbers
 - Currently a tutorial for flip servers only. Modify instructions to ensure that this works with Windows or mac operating systems also.
+-->
 
 ## Table of Contents
 1. [Contributions](#contributions)
