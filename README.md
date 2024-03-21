@@ -740,9 +740,11 @@ flip3 ~/react-starter-app/App/frontend 1023$ ▌
 ```
 > You should now see a `/dist` folder was created in the `/frontend` directory!
 
-Every time you run the command `npm run build` it will replace your old `/dist` with a new version containing all of your newly saved react code and assets. Be careful with this command becasue you will lose the old version of `/dist` that you may have running on your server. 
+Every time you run the command `npm run build` it will replace your old `/dist` with a new version containing all of your newly saved react code and assets. Be careful with this command becasue you will lose the old version of `/dist` that you may have running on your older server. 
 
-serving the vite project:
+#### Serving the Vite dist:
+
+Now that you have built your `/dist` folder, this static build can be served hundreds of different ways. Since we are already running the express backend on a different flip port, we will use our frontend express server `reactServer.cjs` to serve the `/dist` build folder at a port of our choosing. There is a serve command built into the frontend package.json that will automatically use forever to start up `reactServer.cjs`.
 ```sh
 flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1030$ npm run serve
 
@@ -755,6 +757,8 @@ flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1031$ ▌
 ```
 
 ## Build and API Served With Forever
+
+Here are some images of what the stock build of this website will look like.
 
 ### API On Separate Port
 ![API](images-readme/api.png)
