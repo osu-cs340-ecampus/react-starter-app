@@ -749,17 +749,32 @@ Server running:  http://flip3.engr.oregonstate.edu:6061...
 flip3 ~/ula_cs340/winter24/react-starter-app/App/frontend 1031$ ▌
 ```
 
+## Build and API Served With Forever
+
+### API On Separate Port
+![API](images-readme/api.png)
+
+### Homepage
+![Home Screen](images-readme/homescreen.png)
+
+### BSG People Page
+![BSG People](images-readme/bsgpeople.png)
+
+### Add Person Page
+![Add Person](images-readme/addperson.png)
+
+### Update Person Page
+![Update Person](images-readme/updateperson.png)
+
+
 ## Testing
 
 Please note that testing is outside the scope of this project and course and will not be covered in this guide.
 
 ## Git
 
-[Provide guidelines on using Git for version control throughout the project.]
+Please see the git and github guide and videos on Canvas.
 
-## Deployment
-
-[Discuss the methods for deploying the application, focusing on OSU's flip server and any alternatives.]
 
 ## Troubleshooting
 
