@@ -26,16 +26,25 @@ This guide was developed by [Devin Daniels](https://github.com/devingdaniels) an
 ## TLDR
 Assuming you are ssh logged into flip or classwork osu servers. To view the application you must be logged into the osu vpn service.
 1. Clone the starter app repository: `git clone git@github.com:osu-cs340-ecampus/react-starter-app.git`
-   - Follow the git guide on canvas, you may need a git 
+   - Follow the git guide on canvas, you may need a git
+
 2. Navigate to the `/App` directory: `cd react-starter-app/App`
-3. Set up the frontend:
-   - Change directory to frontend: `cd frontend`
-   - Install necessary packages: `npm install`
-   - Launch the frontend: `npm start`
-4. Set up the backend:
-   - Change directory to backend: `cd ../backend` 
+
+3. Set up the backend:
+   - Change directory to /backend/database: `cd ../backend/database`
+   - Login to MariaDB in terminal
+   - In Mariadb run `source ddl.sql;`, and confirm the database is added without error. Then exit Mariadb.
+   - Change directory to /backend: `cd ..`
+   - Update all of your .env information locally, see [Backend Setup (Node.js/Express)](#backend-setup-nodejsexpress)
    - Install necessary packages: `npm install`
    - Launch the backend: `npm start`
+
+4. Set up the frontend:
+   - Change directory to frontend: `cd frontend`
+   - Update all of your .env information locally, see [Frontend Setup (Vite)](#frontend-setup-vite)
+   - Install necessary packages: `npm install`
+   - Launch the frontend: `npm start`
+
 5. Begin your development journey: Happy Hacking!
 
 ## Overview
