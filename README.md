@@ -13,12 +13,13 @@
 1. [Contributions](#contributions)
 2. [TLDR](#tldr)
 3. [Overview](#overview)
-4. [Getting Started](#getting-started)
-5. [Backend Setup (Node.js/Express)](#backend-setup-nodejsexpress)
-6. [Frontend Setup (Vite)](#frontend-setup-vite)
-7. [Understanding Terminal Commands and NPM Scripts](#understanding-terminal-commands-and-npm-scripts)
-8. [Build and Deploy](#build-and-deploy)
-9. [Screenshots of Build and API Served With Forever](#build-and-api-served-with-forever)
+4. [Resources](#resources)
+5. [Getting Started](#getting-started)
+6. [Backend Setup (Node.js/Express)](#backend-setup-nodejsexpress)
+7. [Frontend Setup (Vite)](#frontend-setup-vite)
+8. [Understanding Terminal Commands and NPM Scripts](#understanding-terminal-commands-and-npm-scripts)
+9. [Build and Deploy](#build-and-deploy)
+10. [Screenshots of Build and API Served With Forever](#build-and-api-served-with-forever)
 
 ## Contributions
 
@@ -65,6 +66,21 @@ Key Assumptions:
    - Note: Adaptations for local development are possible and outlined in this guide.
 5. You have some familiarity with react hooks like `useState()` and `useEffect()`.
    - The code in this guide uses these hooks for state management and network requests. Examples of these are provided and described, but you may need to do more research for a better understanding of how they work.
+
+## Resources
+- [Vite Docs](https://vitejs.dev/guide/)
+- [New React Docs](https://react.dev/)
+- [Old React Docs](https://legacy.reactjs.org/docs/getting-started.html)
+- [Express Docs](https://expressjs.com/)
+
+- [Video - useState Hook](https://youtu.be/O6P86uwfdR0?si=dEIYE2SZFrsaFenH)
+- [Video - useEffect Hook](https://youtu.be/0ZJgIjIuY7U?si=cUOxarBpQvSnswT9)
+- [Video - Serving build](https://youtu.be/4pUBO31nkpk?si=C9tFJbMi-QP31IJm)
+- **Videos - CRUD in React**
+   1. [Part 1](https://youtu.be/T8mqZZ0r-RA?si=s2dJnArkHCkvoZml)
+   2. [Part 2](https://youtu.be/3YrOOia3-mo?si=ZNYcD6Ee9KemtNFu)
+   3. [Part 3](https://youtu.be/_S2GKnFpdtE?si=P8QYLMORSslHmsLn)
+
 
 ## Getting Started
 
