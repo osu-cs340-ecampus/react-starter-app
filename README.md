@@ -1,14 +1,20 @@
 # CS 340 React Starter Guide
 
 <!--
-## Upgrades for Next Version
+## Upgrades for future
+* Add a comment below or remove items if needed:
 - ensure that github repo lets the public clone, but not commit/change main???
 - Re-build to ensure new ports work on dist
 - Edit frontend tables to show better data and examples on how to JOIN and do other stuff
 - Edit frontend forms to match dynamic dropdown requirement and not use typed id numbers
 - Currently a tutorial for flip servers only. Modify instructions to ensure that this works with Windows or mac operating systems also.
+- Update any UI screenshots if changes are made.
+-
+-
+-
 -->
 
+<!-- Dont forget to upgrade the Table of Contents prior to Commits -->
 ## Table of Contents
 1. [Contributions](#contributions)
 2. [TLDR](#tldr)
@@ -17,9 +23,10 @@
 5. [Getting Started](#getting-started)
 6. [Backend Setup (Node.js/Express)](#backend-setup-nodejsexpress)
 7. [Frontend Setup (Vite)](#frontend-setup-vite)
-8. [Understanding Terminal Commands and NPM Scripts](#understanding-terminal-commands-and-npm-scripts)
-9. [Build and Deploy](#build-and-deploy)
-10. [Screenshots of Build and API Served With Forever](#build-and-api-served-with-forever)
+8. [React and Node.js Assignment - Connecting to a MySQL Database](#react-and-nodejs-assignment---connecting-to-a-mysql-database)
+9. [Understanding Terminal Commands and NPM Scripts](#understanding-terminal-commands-and-npm-scripts)
+10. [Build and Deploy](#build-and-deploy)
+11. [Screenshots of Build and API Served With Forever](#build-and-api-served-with-forever)
 
 ## Contributions
 
@@ -439,6 +446,112 @@ With that being said, this magical VSCode plugin is able to auto-forward the por
    # use this command to kill the process with the PID
    flip3 ~ 1011$ kill -9 2502508
    ```
+
+
+## React and Node.js Assignment - Connecting to a MySQL Database
+Now that your application is set up and running, this section will guide you through adding a diagnostic API endpoint to your Node.js Express backend and displaying its data on your React application's homepage. This integration will ensure your backend and database are correctly configured and communicating with your frontend.
+
+### Step 1: Backend Setup
+First, ensure you have MySQL installed and set up in your environment. Then, install the MySQL package in your `/backend` directory if you haven't already with `npm install mysql --save`.
+
+### Step 2: Create Diagnostic Route
+In your `/backend/server.js` file, import your database connector and define a new `GET` request route at `/api/diagnostic` that performs a series of database operations:
+```javascript
+
+// Match to your database config route
+const db = require('./database/config.js');
+
+// define a new GET request with express:
+app.get('/api/diagnostic', async (req, res) => {
+  try {
+    // Await your database queries here
+    await db.pool.query('DROP TABLE IF EXISTS diagnostic;');
+    await db.pool.query('CREATE TABLE diagnostic(id INT PRIMARY KEY AUTO_INCREMENT, text VARCHAR(255) NOT NULL);');
+    await db.pool.query('INSERT INTO diagnostic (text) VALUES ("MySQL is working!")');
+    const results = await db.pool.query('SELECT * FROM diagnostic;');
+
+    // res.json() automatically stringifies the JavaScript object to JSON
+    res.json(results);
+
+  } catch (error) {
+    // Handle Errors
+    console.error('Database operation failed:', error);
+    res.status(500).send('Server error');
+  }
+});
+
+```
+
+### Step 3: Frontend Setup
+Update the HomePage Component by modifying `/frontend/HomePage.jsx` to fetch and display data from the endpoint you created at `/api/diagnostic`.
+
+```javascript
+import { useState, useEffect } from 'react';  // import the hooks you are going to use
+import axios from 'axios';
+
+// Define the HomePage component
+function HomePage() {
+  // useState hook to initialize the diagnosticData state variable to store the fetched data
+  const [diagnosticData, setDiagnosticData] = useState([]);
+
+  // Define a function to fetch diagnostic data from the API
+  const fetchDiagnosticData = async () => {
+    try {
+      // Construct the URL for the API call
+      const URL = import.meta.env.VITE_API_URL + 'diagnostic';
+      // Use Axios to make the GET request
+      const response = await axios.get(URL);
+      // Update state with the response data
+      setDiagnosticData(response.data);
+    } catch (error) {
+      // Handle any errors that occur during the fetch operation
+      console.error('Error fetching diagnostic data:', error);
+      alert('Error fetching diagnostic data from the server.');
+    }
+  };
+
+  // useEffect hook to trigger the fetchDiagnosticData function when the component mounts
+  useEffect(() => {
+    fetchDiagnosticData();
+  }, []);
+
+  // Determine content based on diagnosticData length from the fetch action
+  let content;
+  if (diagnosticData === null) {
+    content = <p>Loading diagnostic data...</p>; // Show while data is null
+  } else if (diagnosticData.length === 0) {
+    content = <p>No diagnostic data found.</p>; // Show if data is an empty array
+  } else {
+    content = <pre>{JSON.stringify(diagnosticData, null, 2)}</pre>;
+  }
+
+  // display the content and anything else
+  return (
+    <>
+     <h2>Diagnostic Data</h2>
+      {content}
+
+     <h2>Feel free to add any information you like about your project</h2>
+    </>
+  );
+}
+export default HomePage;
+```
+
+### Testing the DB Integration
+Now that you have set up the express backend route and frontend Homepage fetch, you should now be able to see this when you `npm run start` the dev servers for both backend and frontend.
+
+1. Start your backend server and ensure it's running without errors.
+2. Start your React frontend and navigate to the homepage.
+3. You should see the diagnostic data displayed on the page, confirming that the backend and frontend are correctly integrated.
+4. In the browser dev tools network tab you should see the fetch to `/api/diagnostic` with its request and response.
+5. You should see any console.log() statements you added in the backend code in the terminal on flip where the server.js is running.
+
+### Building and Submitting the Assignment
+By following these steps, you've successfully added a diagnostic API endpoint to your backend and displayed its response in your React frontend. This setup is a foundational step towards building full-stack web applications that require backend and frontend integration. Once you are satisfied that the frontend application is communicating with the backend server.js in the `npm run start` defined dev servers, you will need to take steps to build and serve a working URL that other people on the OSU VPN may observe the functionality of the diagnostic fetch. Any URLs you created with `npm run start` do not persist once you log out of the ssh session on the flip servers. **The link you submit to canvas will need to stay live and functional for TAs and Instructors to complete their grading.** You may choose to modify the configurations of this repo to fit your specific needs for using various OSU servers (flip1, flip2, classwork, etc...). Please refer to the remaining sections below to learn how to build and deploy your react application. The section [Build and Deploy](#build-and-deploy) should help you get started on that.
+
+
+
 
 ## Understanding Terminal Commands and NPM Scripts
 The `package.json` files in both the `/frontend` and `/backend` directories of our project serve as a manifest for project settings, dependencies, and, importantly, scripts that automate tasks. These scripts are custom commands defined under the `"scripts"` property and can be executed using npm or npx, simplifying the development and deployment processes. In this section we will iteratively learn about the various ways you can start up a project server, and how these can be traslated into efficient npm scripts.
