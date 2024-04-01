@@ -14,8 +14,17 @@ const PORT = process.env.PORT || 8500;
 app.use(cors({ credentials: true, origin: "*" }));
 app.use(express.json());
 
-// API Routes for backend:
+// API Routes for backend CRUD:
 app.use("/api/people", require("./routes/peopleRoutes"));
+
+
+// Add your Connect DB Activitiy Code Below:
+// ...
+
+
+// ...
+// End Connect DB Activity Code.
+
 
 app.listen(PORT, () => {
   // Change this text to whatever FLIP server you're on
