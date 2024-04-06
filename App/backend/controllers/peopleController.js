@@ -116,6 +116,7 @@ const deletePerson = async (req, res) => {
       "SELECT 1 FROM bsg_people WHERE id = ?",
       [personID]
     );
+
     // If the person doesn't exist, return an error
     if (isExisting.length === 0) {
       return res.status(404).send("Person not found");
