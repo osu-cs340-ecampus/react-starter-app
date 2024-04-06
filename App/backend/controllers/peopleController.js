@@ -78,13 +78,18 @@ const updatePerson = async (req, res) => {
     if (!lodash.isEqual(newPerson, oldPerson)) {
       const query =
         "UPDATE bsg_people SET fname=?, lname=?, homeworld=?, age=? WHERE id=?";
+
+      // Homeoworld is NULL-able FK in bsg_people, has to be valid INT FK ID or NULL
+      const hw = newPerson.homeworld === "" ? null : newPerson.homeworld;
+
       const values = [
         newPerson.fname,
         newPerson.lname,
-        newPerson.homeworld,
+        hw,
         newPerson.age,
         personID,
       ];
+
       // Perform the update
       await db.query(query, values);
       // Inform client of success and return 
