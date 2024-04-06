@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
@@ -10,10 +10,10 @@ const UpdatePerson = () => {
   const prevPerson = location.state.person;
 
   const [formData, setFormData] = useState({
-    fname: "",
-    lname: "",
-    homeworld: "",
-    age: "",
+    fname: prevPerson.fname || '',
+    lname: prevPerson.lname || '',
+    homeworld: prevPerson.homeworld || '',
+    age: prevPerson.age || '',
   });
 
   const handleInputChange = (event) => {
@@ -24,20 +24,38 @@ const UpdatePerson = () => {
     }));
   };
 
+  function isUpdate(){
+    // Check if formData is equal to prevPerson
+    if (JSON.stringify(formData) === JSON.stringify({
+      fname: prevPerson.fname || '',
+      lname: prevPerson.lname || '',
+      homeworld: prevPerson.homeworld || '',
+      age: prevPerson.age || '',
+    })) {
+      alert("No changes made.");
+      return false;
+    }
+    return true
+  }
+
   const handleSubmit = async (event) => {
     // Stop default form behavior which is to reload the page
     event.preventDefault();
-    try {
-      const URL = import.meta.env.VITE_API_URL + "people/" + id;
-      const response = await axios.put(URL, formData);
-      if (response.status !== 200) {
-        alert("Error updating person");
-      } else {
-        alert(response.data.message);
-        navigate("/people");
+    // Check if formData is equal to prevPerson
+    if (isUpdate()){
+      try {
+        const URL = import.meta.env.VITE_API_URL + "people/" + id;
+        const response = await axios.put(URL, formData);
+        if (response.status !== 200) {
+          alert("Error updating person");
+        } else {
+          alert(response.data.message);
+          // Redirect to people page
+          navigate("/people");
+        }
+      } catch (err) {
+        console.log("Error updating person:", err);
       }
-    } catch (err) {
-      console.log("Error updating person:", err);
     }
   };
 
@@ -94,3 +112,4 @@ const UpdatePerson = () => {
 };
 
 export default UpdatePerson;
+
