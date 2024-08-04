@@ -25,7 +25,10 @@ app.use("/api/people", require("./routes/peopleRoutes"));
 // End Connect DB Activity Code.
 
 
+const os = require("os");
+const hostname = os.hostname();
+
 app.listen(PORT, () => {
-  // Change this text to whatever FLIP server you're on
-  console.log(`Server running:  http://flip3.engr.oregonstate.edu:${PORT}...`);
+  // flip server should automatically match whatever server you're on 
+  console.log(`Server running:  http://${hostname}:${PORT}...`);
 });
