@@ -20,6 +20,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  // Change this text to whatever FLIP server you're on
-  console.log(`Server running:  http://flip3.engr.oregonstate.edu:${PORT}...`);
+  console.log(`Server running:  http://classwork.engr.oregonstate.edu:${PORT}...`);
 });
