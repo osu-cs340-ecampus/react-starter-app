@@ -467,7 +467,7 @@ app.get('/api/diagnostic', async (req, res) => {
     // Await your database queries here
     await db.pool.query('DROP TABLE IF EXISTS diagnostic;');
     await db.pool.query('CREATE TABLE diagnostic(id INT PRIMARY KEY AUTO_INCREMENT, text VARCHAR(255) NOT NULL);');
-    await db.pool.query('INSERT INTO diagnostic (text) VALUES ("MySQL is working!")');
+    await db.pool.query('INSERT INTO diagnostic (text) VALUES ("MySQL and React is working for myONID!")');
     const results = await db.pool.query('SELECT * FROM diagnostic;');
 
     // res.json() automatically stringifies the JavaScript object to JSON
